@@ -9,9 +9,11 @@ const xss = require("xss-clean");
 const hpp = require("hpp");
 const path = require("path");
 const app = express();
+const errorMiddleware = require("./middlewares/error");
 
 // Routes
 const userRoutes = require("./routes/userRoutes");
+
 // Middleware setup
 app.use(cors());
 app.use(cookieParser());
@@ -36,5 +38,8 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // Import and use routes
 app.use("/api/users", userRoutes);
+
+// error middleware
+app.use(errorMiddleware);
 
 module.exports = app;

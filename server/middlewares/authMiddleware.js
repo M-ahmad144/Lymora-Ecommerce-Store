@@ -24,9 +24,7 @@ exports.authMiddleware = asyncHandler(async (req, res, next) => {
 });
 
 exports.authAdmin = asyncHandler(async (req, res, next) => {
-  // Run authMiddleware first to check if the user is authenticated
-  await authMiddleware(req, res, () => {});
-  if (req.user && !req.user.isAdmin) {
+  if (!req.user || !req.user.isAdmin) {
     return res.status(403).json({ message: "Access denied. Admins only." });
   }
   next();

@@ -5,19 +5,21 @@ const {
   signupUser,
   loginUser,
   logoutCurrentUser,
-  getAllUsers, 
+  getAllUsers,
+  getCurrentUserProfile,
+  updateCurrentUserProfile,
 } = require("../controllers/userController");
 
 const { authMiddleware, authAdmin } = require("../middlewares/authMiddleware");
 
-
+router.route("/").post(signupUser).get(authMiddleware, authAdmin, getAllUsers);
 router
-  .route("/")
-  .post(signupUser) 
-  .get(authMiddleware, authAdmin, getAllUsers); /
+  .route("/profile")
+  .get(authMiddleware, getCurrentUserProfile)
+  .patch(authMiddleware, updateCurrentUserProfile);
 
-// Public login and logout routes
-router.post("/auth", loginUser); 
-router.post("/logout", logoutCurrentUser); 
+// Public routes
+router.post("/auth", loginUser);
+router.post("/logout", logoutCurrentUser);
 
 module.exports = router;
