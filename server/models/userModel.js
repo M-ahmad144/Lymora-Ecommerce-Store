@@ -8,7 +8,6 @@ const userSchema = new mongoose.Schema(
       required: [true, "Username is required"],
       minlength: [3, "Username must be at least 3 characters"],
       maxlength: [30, "Username must be less than 30 characters"],
-      unique: true,
       trim: true,
     },
     email: {
@@ -48,6 +47,14 @@ userSchema.pre("save", async function (next) {
 // Method to compare passwords
 userSchema.methods.comparePassword = async function (candidatePassword) {
   return await bcrypt.compare(candidatePassword, this.password);
+};
+
+// Method to check if password is correct
+userSchema.methods.correctPassword = async function (
+  candidatePassword,
+  userPassword
+) {
+  return bcrypt.compare(candidatePassword, userPassword);
 };
 
 // Method to check if password was changed after JWT was issued
