@@ -7,10 +7,10 @@ const {
   getAllUsers,
   getCurrentUserProfile,
   updateCurrentUserProfile,
-  updatePassword,
+  updatePasswordByUser,
   deleteUser,
   getUserById,
-  updateUserById,
+  updateUserByAdmin,
 } = require("../controllers/userController");
 
 // Middleware imports
@@ -29,12 +29,12 @@ router.get("/", authAdmin, getAllUsers);
 router
   .route("/:id")
   .get(authAdmin, getUserById)
-  .patch(authAdmin, updateUserById)
+  .patch(authAdmin, updateUserByAdmin)
   .delete(authAdmin, deleteUser);
 
 // Profile routes (user-protected routes)
 router.get("/profile", getCurrentUserProfile);
 router.patch("/profile", updateCurrentUserProfile);
-router.patch("/profile/password", updatePassword);
+router.patch("/profile/password", updatePasswordByUser);
 
 module.exports = router;

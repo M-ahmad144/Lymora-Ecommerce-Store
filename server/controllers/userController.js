@@ -38,8 +38,6 @@ exports.loginUser = asyncHandler(async (req, res, next) => {
   if (!isMatch) {
     return next(new ErrorHandler("Invalid credentials", 401));
   }
-
-  // Generate token and send response
   generateToken(res, user._id);
   res.status(200).json({
     success: true,
@@ -95,7 +93,7 @@ exports.updateCurrentUserProfile = asyncHandler(async (req, res, next) => {
   if (req.body.username) user.username = req.body.username;
   if (req.body.email) user.email = req.body.email;
 
-  await user.save({ validateModifiedOnly: true });
+  await user.save({ validateBeforeSave: true });
   res.status(200).json({
     success: true,
     user: {
@@ -107,7 +105,7 @@ exports.updateCurrentUserProfile = asyncHandler(async (req, res, next) => {
 });
 
 // Update current user password
-exports.updatePassword = asyncHandler(async (req, res, next) => {
+exports.updatePasswordByUser = asyncHandler(async (req, res, next) => {
   const { passwordCurrent, newPassword, passwordConfirm } = req.body;
   const user = await User.findById(req.user._id).select("+password");
   if (!user) {
@@ -125,7 +123,7 @@ exports.updatePassword = asyncHandler(async (req, res, next) => {
   }
 
   user.password = newPassword;
-  await user.save();
+  await user.save({ validateBeforeSave: true });
   // Generate a new token
   generateToken(res, user._id);
 
@@ -164,7 +162,7 @@ exports.getUserById = asyncHandler(async (req, res, next) => {
 });
 
 //update user by id
-exports.updateUserById = asyncHandler(async (req, res, next) => {
+exports.updateUserByAdmin = asyncHandler(async (req, res, next) => {
   const user = await User.findById(req.params.id);
   if (!user) {
     return next(new ErrorHandler("User not found", 404));
@@ -172,7 +170,7 @@ exports.updateUserById = asyncHandler(async (req, res, next) => {
   if (req.body.username) user.username = req.body.username || user.username;
   if (req.body.email) user.email = req.body.email || user.email;
   if (req.body.isAdmin) user.isAdmin = Boolean(req.body.isAdmin);
-  await user.save({ validateModifiedOnly: true });
+  await user.save({ validateBeforeSave: true });
   res.status(200).json({
     success: true,
     id: user._id,

@@ -21,7 +21,7 @@ app.use(morgan("dev"));
 app.use(helmet());
 app.use(
   rateLimit({
-    windowMs: 5 * 60 * 1000, // 5 minutes
+    windowMs: 5 * 60 * 1000,
     max: 100, // Limit each IP to 100 requests per windowMs
   })
 );
