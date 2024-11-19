@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useLoginMutation } from "../../redux/api/userApiSlice";
+import { logout } from "../../redux/features/auth/authSlice";
 import {
   AiOutlineHome,
   AiOutlineShopping,
@@ -13,6 +16,21 @@ import { FaHeart } from "react-icons/fa";
 import "./Navigation.css";
 
 function Navigation() {
+  const currentUser = useSelector((state) => state.auth.userInfo); // Current logged-in user
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [triggerLogout] = useLoginMutation(); // Logout API mutation
+
+  const performLogout = async () => {
+    try {
+      await triggerLogout().unwrap(); // Send logout request
+      dispatch(logout()); // Clear user data
+      navigate("/login"); // Redirect to login page
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
+
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [showSidebar, setShowSidebar] = useState(false);
 
@@ -26,6 +44,7 @@ function Navigation() {
   const closeSidebar = () => {
     setShowSidebar(false);
   };
+
   return (
     <div
       style={{ zIndex: "1000" }}
@@ -34,6 +53,7 @@ function Navigation() {
         showSidebar ? "hidden" : "flex"
       } xl:flex lg:flex md:hidden sm:hidden flex-col justify-between p-4 text-white bg-black w-[4%] hover:w-[15%] h-[100vh] fixed`}
     >
+      {/* Sidebar Links */}
       <div className="flex flex-col justify-center space-y-4">
         <Link
           to="/"
@@ -64,6 +84,20 @@ function Navigation() {
           <FaHeart className="mt-[3rem] mr-2" size={26} />
           <span className="hidden nav-item-name mt-[3rem]">Favorites</span>
         </Link>
+      </div>
+
+      {/* Dropdown Menu for User Profile */}
+      <div className="relative">
+        <button
+          onClick={toggleDropdown}
+          className="flex items-center text-gray-800 focus:outline-none"
+        >
+          {currentUser ? (
+            <span className="text-white">currentUser.name</span>
+          ) : (
+            <></>
+          )}
+        </button>
       </div>
 
       <ul>
