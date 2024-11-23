@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useLoginMutation } from "../../redux/api/userApiSlice";
+import { useLogoutMutation } from "../../redux/api/userApiSlice";
 import { logout } from "../../redux/features/auth/authSlice";
 import {
   AiOutlineHome,
@@ -16,16 +16,18 @@ import { FaHeart } from "react-icons/fa";
 import "./Navigation.css";
 
 function Navigation() {
-  const currentUser = useSelector((state) => state.auth.userInfo); // Current logged-in user
+  const currentUser = useSelector((state) => state.auth.userInfo);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [triggerLogout] = useLoginMutation(); // Logout API mutation
+  const [logoutApiCall] = useLogoutMutation();
 
-  const performLogout = async () => {
+  const handleLogout = async () => {
     try {
-      await triggerLogout().unwrap(); // Send logout request
-      dispatch(logout()); // Clear user data
-      navigate("/login"); // Redirect to login page
+      // Call the API to perform logout
+      await logoutApiCall().unwrap();
+      // Clear user info from Redux store
+      dispatch(logout());
+      navigate("/login");
     } catch (error) {
       console.error("Logout failed:", error);
     }
@@ -51,10 +53,10 @@ function Navigation() {
       id="navigation-container"
       className={`${
         showSidebar ? "hidden" : "flex"
-      } xl:flex lg:flex md:hidden sm:hidden flex-col justify-between p-4 text-white bg-black w-[4%] hover:w-[15%] h-[100vh] fixed`}
+      } xl:flex lg:flex md:hidden sm:hidden flex-col justify-between p-4 text-white bg-black w-[6%] hover:w-[15%] h-[100vh] fixed`}
     >
       {/* Sidebar Links */}
-      <div className="flex flex-col justify-center space-y-4">
+      <div className="flex flex-col justify-center">
         <Link
           to="/"
           className="flex items-center transform transition-transform hover:translate-x-2"
@@ -90,36 +92,130 @@ function Navigation() {
       <div className="relative">
         <button
           onClick={toggleDropdown}
-          className="flex items-center text-gray-800 focus:outline-none"
+          className="flex items-center text-white hover:text-gray-300 focus:outline-none"
         >
-          {currentUser ? (
-            <span className="text-white">currentUser.name</span>
-          ) : (
-            <></>
+          {currentUser && (
+            <span className="mr-2 font-medium text-white">
+              {currentUser.data.name}
+            </span>
+          )}
+          {currentUser && (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className={`h-5 w-5 transition-transform ${
+                dropdownOpen ? "rotate-180" : ""
+              }`}
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d={dropdownOpen ? "M5 15l7-7 7 7" : "M19 9l-7 7-7-7"}
+              />
+            </svg>
           )}
         </button>
+
+        {/* Dropdown Menu */}
+        {dropdownOpen && currentUser && (
+          <ul
+            className={`absolute right-0 mt-2 w-36 bg-black rounded-md shadow-lg ring-1 ring-slate-900 ring-opacity-55 ${
+              !currentUser.data.isAdmin ? "-top-20" : "-top-72"
+            }`}
+          >
+            {/* Admin-specific links */}
+            {currentUser.data.isAdmin && (
+              <>
+                <li>
+                  <Link
+                    to="/admin/dashboard"
+                    className="block hover:bg-gray-700 px-4 py-2 rounded-t-md text-sm text-white"
+                  >
+                    Dashboard
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/admin/productlist"
+                    className="block hover:bg-gray-700 px-4 py-2 text-sm text-white"
+                  >
+                    Products
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/admin/categorylist"
+                    className="block hover:bg-gray-700 px-4 py-2 text-sm text-white"
+                  >
+                    Categories
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/admin/orderlist"
+                    className="block hover:bg-gray-700 px-4 py-2 text-sm text-white"
+                  >
+                    Orders
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/admin/userlist"
+                    className="block hover:bg-gray-700 px-4 py-2 text-sm text-white"
+                  >
+                    Users
+                  </Link>
+                </li>
+              </>
+            )}
+
+            {/* General links */}
+            <li>
+              <Link
+                to="/profile"
+                className="block hover:bg-gray-700 px-4 py-2 text-sm text-white"
+              >
+                Profile
+              </Link>
+            </li>
+            <li>
+              <button
+                onClick={handleLogout}
+                className="block hover:bg-gray-700 px-4 py-2 rounded-b-md w-full text-left text-sm text-white"
+              >
+                Logout
+              </button>
+            </li>
+          </ul>
+        )}
       </div>
 
-      <ul>
-        <li>
-          <Link
-            to="/login"
-            className="flex items-center transform transition-transform hover:translate-x-2"
-          >
-            <AiOutlineLogin className="mt-[3rem] mr-2" size={26} />
-            <span className="hidden nav-item-name mt-[3rem]">Login</span>
-          </Link>
-        </li>
-        <li>
-          <Link
-            to="/register"
-            className="flex items-center transform transition-transform hover:translate-x-2"
-          >
-            <AiOutlineUserAdd className="mt-[3rem] mr-2" size={26} />
-            <span className="hidden nav-item-name mt-[3rem]">Register</span>
-          </Link>
-        </li>
-      </ul>
+      {/* Login/Register Options */}
+      {!currentUser && (
+        <ul>
+          <li>
+            <Link
+              to="/login"
+              className="flex items-center mt-5 transform transition-transform hover:translate-x-2"
+            >
+              <AiOutlineLogin className="mt-[4px] mr-2" size={26} />
+              <span className="hidden nav-item-name">LOGIN</span>
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/register"
+              className="flex items-center mt-5 transform transition-transform hover:translate-x-2"
+            >
+              <AiOutlineUserAdd size={26} />
+              <span className="hidden nav-item-name">REGISTER</span>
+            </Link>
+          </li>
+        </ul>
+      )}
     </div>
   );
 }

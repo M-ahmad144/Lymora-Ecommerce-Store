@@ -16,9 +16,14 @@ function Login() {
   const [login, { isLoading }] = useLoginMutation();
   const userInfo = useSelector((state) => state.auth.userInfo);
 
-  const { search } = useLocation();
-  const redirectInUrl = new URLSearchParams(search).get("redirect");
-  const redirect = redirectInUrl ? redirectInUrl : "/";
+  // useLocation: Get the current URL's query string
+  const { search } = useLocation(); // search = "?redirect=/dashboard"
+  // URLSearchParams: Extract 'redirect' parameter from the query string
+  const redirectInUrl = new URLSearchParams(search).get("redirect"); // redirectInUrl = "/dashboard"
+  // Set default redirect if 'redirect' parameter is not present
+  const redirect = redirectInUrl ? redirectInUrl : "/"; // redirect = redirectInUrl || "/"
+
+  //https://example.com/login?redirect=/dashboard, search would be ?redirect=/dashboard and redirectInUrl would be /dashboard.
 
   useEffect(() => {
     if (userInfo) {
@@ -33,12 +38,13 @@ function Login() {
       toast.error("Please enter both email and password");
       return;
     }
-
     try {
       const user = await login({ email, password }).unwrap();
+      console.log(user);
       dispatch(setCredentials(user)); // Save user credentials to Redux store
       navigate(redirect); // Redirect after successful login
     } catch (error) {
+      console.log(error);
       toast.error(error?.message || "Failed to sign in");
     }
   };
@@ -60,7 +66,7 @@ function Login() {
               <input
                 type="email"
                 id="email"
-                className="mt-1 p-2 border rounded w-full"
+                className="mt-1 p-2 border rounded w-full text-black"
                 placeholder="Enter email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -76,7 +82,7 @@ function Login() {
               <input
                 type="password"
                 id="password"
-                className="mt-1 p-2 border rounded w-full"
+                className="mt-1 p-2 border rounded w-full text-black"
                 placeholder="Enter password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -89,8 +95,7 @@ function Login() {
             >
               {isLoading ? "Signing In..." : "Sign In"}
             </button>
-            {isLoading && <Loader />}{" "}
-            {/* Display Loader component while logging in */}
+            {/* {isLoading && <Loader />}{" "} */}
           </form>
 
           <div className="mt-4">

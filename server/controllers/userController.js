@@ -18,7 +18,7 @@ exports.signupUser = asyncHandler(async (req, res, next) => {
   generateToken(res, newUser._id);
   res.status(201).json({
     success: true,
-    user: {
+    data: {
       id: newUser._id,
       name: newUser.username,
       email: newUser.email,
@@ -41,7 +41,7 @@ exports.loginUser = asyncHandler(async (req, res, next) => {
   generateToken(res, user._id);
   res.status(200).json({
     success: true,
-    user: {
+    data: {
       id: user._id,
       name: user.username,
       email: user.email,
@@ -76,7 +76,7 @@ exports.getCurrentUserProfile = asyncHandler(async (req, res, next) => {
   }
   res.status(200).json({
     success: true,
-    user: {
+    data: {
       _id: user._id,
       username: user.username,
       email: user.email,
@@ -96,7 +96,7 @@ exports.updateCurrentUserProfile = asyncHandler(async (req, res, next) => {
   await user.save({ validateBeforeSave: true });
   res.status(200).json({
     success: true,
-    user: {
+    data: {
       _id: user._id,
       username: user.username,
       email: user.email,
@@ -173,9 +173,11 @@ exports.updateUserByAdmin = asyncHandler(async (req, res, next) => {
   await user.save({ validateBeforeSave: true });
   res.status(200).json({
     success: true,
-    id: user._id,
-    username: user.username,
-    email: user.email,
-    isAdmin: user.isAdmin,
+    data: {
+      id: user._id,
+      username: user.username,
+      email: user.email,
+      isAdmin: user.isAdmin,
+    },
   });
 });
