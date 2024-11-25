@@ -8,7 +8,7 @@ export default function App() {
     <>
       <ToastContainer />
       <Navigation />
-
+      {/* outlet - this is where the child routes will be rendered */}
       <main className="py-3">
         <Outlet />
       </main>

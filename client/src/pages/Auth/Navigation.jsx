@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -25,8 +25,7 @@ function Navigation() {
     try {
       // Call the API to perform logout
       await logoutApiCall().unwrap();
-      // Clear user info from Redux store
-      dispatch(logout());
+      dispatch(logout()); // Clear user info from Redux store
       navigate("/login");
     } catch (error) {
       console.error("Logout failed:", error);
@@ -47,13 +46,32 @@ function Navigation() {
     setShowSidebar(false);
   };
 
+  // Close dropdown if clicked outside
+  const dropdownRef = useRef(null);
+  const closeDropdown = () => {
+    setDropdownOpen(false);
+  };
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      // Check if the click is outside the dropdown
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        closeDropdown();
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
     <div
       style={{ zIndex: "1000" }}
       id="navigation-container"
       className={`${
         showSidebar ? "hidden" : "flex"
-      } xl:flex lg:flex md:hidden sm:hidden flex-col justify-between p-4 text-white bg-black w-[6%] hover:w-[15%] h-[100vh] fixed`}
+      } xl:flex lg:flex md:hidden sm:hidden flex-col justify-between p-4 text-white bg-black  text-[0.6rem] h-[100vh] fixed`}
     >
       {/* Sidebar Links */}
       <div className="flex flex-col justify-center">
@@ -89,20 +107,22 @@ function Navigation() {
       </div>
 
       {/* Dropdown Menu for User Profile */}
-      <div className="relative">
+      <div ref={dropdownRef} className="relative">
         <button
           onClick={toggleDropdown}
           className="flex items-center text-white hover:text-gray-300 focus:outline-none"
         >
+          {/* show user name if logged in */}
           {currentUser && (
             <span className="mr-2 font-medium text-white">
               {currentUser.data.name}
             </span>
           )}
+          {/* show dropdown arrow */}
           {currentUser && (
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className={`h-5 w-5 transition-transform ${
+              className={`h-5 w-3  transition-transform ${
                 dropdownOpen ? "rotate-180" : ""
               }`}
               fill="none"
@@ -172,7 +192,7 @@ function Navigation() {
               </>
             )}
 
-            {/* General links */}
+            {/* General user links */}
             <li>
               <Link
                 to="/profile"
@@ -193,7 +213,7 @@ function Navigation() {
         )}
       </div>
 
-      {/* Login/Register Options */}
+      {/* Login/Register Links */}
       {!currentUser && (
         <ul>
           <li>

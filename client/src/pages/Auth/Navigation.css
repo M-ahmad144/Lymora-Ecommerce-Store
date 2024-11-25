@@ -5,6 +5,7 @@
 }
 #navigation-container:hover {
   width: 15%;
+  font-size: large;
 }
 .nav-item-name {
   display: none;
