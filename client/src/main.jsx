@@ -15,9 +15,23 @@ import { createBrowserRouter } from "react-router-dom";
 import Login from "./pages/Auth/Login.jsx";
 import Register from "./pages/Auth/Register.jsx";
 
+//private route
+import PrivateRoute from "./components/PrivateRoute.jsx";
+
+//
+import Profile from "./pages/User/Profile.jsx";
+
 const router = createBrowserRouter(
   createRoutesFromElements(
+    // App.jsx is the parent
     <Route path="/" element={<App />}>
+      {/*private routes  */}
+      <Route path="" element={<PrivateRoute />}>
+        {/* parent of Profile route is PrivateRoute */}
+        <Route path="/profile" element={<Profile />} />
+      </Route>
+
+      {/* public routes */}
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
     </Route>
