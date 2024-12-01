@@ -18,7 +18,7 @@ import Register from "./pages/Auth/Register.jsx";
 //private route
 import PrivateRoute from "./components/PrivateRoute.jsx";
 
-//
+//user profile
 import Profile from "./pages/User/Profile.jsx";
 
 const router = createBrowserRouter(
