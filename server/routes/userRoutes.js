@@ -7,7 +7,6 @@ const {
   getAllUsers,
   getCurrentUserProfile,
   updateCurrentUserProfile,
-  updatePasswordByUser,
   deleteUser,
   getUserById,
   updateUserByAdmin,
@@ -24,6 +23,10 @@ router.post("/logout", logoutCurrentUser);
 // Protected routes
 router.use(authMiddleware);
 
+// Profile routes (user-protected routes)
+router.get("/profile", getCurrentUserProfile);
+router.patch("/profile", updateCurrentUserProfile);
+
 // Admin routes
 router.get("/", authAdmin, getAllUsers);
 router
@@ -31,10 +34,5 @@ router
   .get(authAdmin, getUserById)
   .patch(authAdmin, updateUserByAdmin)
   .delete(authAdmin, deleteUser);
-
-// Profile routes (user-protected routes)
-router.get("/profile", getCurrentUserProfile);
-router.patch("/profile", updateCurrentUserProfile);
-router.patch("/profile/password", updatePasswordByUser);
 
 module.exports = router;

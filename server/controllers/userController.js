@@ -20,7 +20,7 @@ exports.signupUser = asyncHandler(async (req, res, next) => {
     success: true,
     data: {
       id: newUser._id,
-      name: newUser.username,
+      username: newUser.username,
       email: newUser.email,
       isAdmin: newUser.isAdmin,
     },
@@ -43,7 +43,7 @@ exports.loginUser = asyncHandler(async (req, res, next) => {
     success: true,
     data: {
       id: user._id,
-      name: user.username,
+      username: user.username,
       email: user.email,
       isAdmin: user.isAdmin,
     },
@@ -84,16 +84,44 @@ exports.getCurrentUserProfile = asyncHandler(async (req, res, next) => {
   });
 });
 
-// update current user profile (without the password)
+//update current user profile
 exports.updateCurrentUserProfile = asyncHandler(async (req, res, next) => {
-  const user = await User.findById(req.user._id);
+  const user = await User.findById(req.user._id).select("+password");
   if (!user) {
     return next(new ErrorHandler("User doesn't exist", 404));
   }
+
+  // Update profile information
   if (req.body.username) user.username = req.body.username;
   if (req.body.email) user.email = req.body.email;
 
+  // Update password if provided
+  if (req.body.password) {
+    // Check if current password is provided and correct
+    if (!req.body.currentPassword) {
+      return next(
+        new ErrorHandler("Current password is required to update password", 400)
+      );
+    }
+
+    const isPasswordCorrect = await user.correctPassword(
+      req.body.currentPassword,
+      user.password
+    );
+    if (!isPasswordCorrect) {
+      return next(new ErrorHandler("Incorrect current password", 401));
+    }
+
+    user.password = req.body.password;
+  }
+
   await user.save({ validateBeforeSave: true });
+
+  // Generate a new token if password was changed
+  if (req.body.password) {
+    generateToken(res, user._id);
+  }
+
   res.status(200).json({
     success: true,
     data: {
@@ -101,35 +129,9 @@ exports.updateCurrentUserProfile = asyncHandler(async (req, res, next) => {
       username: user.username,
       email: user.email,
     },
-  });
-});
-
-// Update current user password
-exports.updatePasswordByUser = asyncHandler(async (req, res, next) => {
-  const { passwordCurrent, newPassword, passwordConfirm } = req.body;
-  const user = await User.findById(req.user._id).select("+password");
-  if (!user) {
-    return next(new ErrorHandler("User not found", 404));
-  }
-  const isCurrentPasswordCorrect = await user.correctPassword(
-    passwordCurrent,
-    user.password
-  );
-  if (!isCurrentPasswordCorrect) {
-    return next(new ErrorHandler("Incorrect current password", 401));
-  }
-  if (newPassword !== passwordConfirm) {
-    return next(new ErrorHandler("Passwords do not match", 400));
-  }
-
-  user.password = newPassword;
-  await user.save({ validateBeforeSave: true });
-  // Generate a new token
-  generateToken(res, user._id);
-
-  res.status(200).json({
-    success: true,
-    message: "Password updated successfully",
+    message: req.body.password
+      ? "Profile and password updated successfully"
+      : "Profile updated successfully",
   });
 });
 

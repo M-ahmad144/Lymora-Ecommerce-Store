@@ -1,129 +1,185 @@
-// import { useEffect, useState } from "react";
-// import { useDispatch, useSelector } from "react-redux";
-// import { toast } from "react-toastify";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { useProfileMutation } from "../../redux/api/userApiSlice";
+import { setCredentials } from "../../redux/features/auth/authSlice";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 
-// import Loader from "../../components/Loader";
-// // import { useProfileMutation } from "../../redux/api/usersApiSlice";
-// import { setCredentials } from "../../redux/features/auth/authSlice";
-// import { Link } from "react-router-dom";
+const Profile = () => {
+  const [username, setUserName] = useState("");
+  const [email, setEmail] = useState("");
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
-// const Profile = () => {
-//   const [username, setUserName] = useState("");
-//   const [email, setEmail] = useState("");
-//   const [password, setPassword] = useState("");
-//   const [confirmPassword, setConfirmPassword] = useState("");
+  const { userInfo } = useSelector((state) => state.auth);
 
-//   const { userInfo } = useSelector((state) => state.auth);
+  const [updateProfile, { isLoading: loadingUpdateProfile }] =
+    useProfileMutation();
 
-//   const [updateProfile, { isLoading: loadingUpdateProfile }] =
-//     useProfileMutation();
+  useEffect(() => {
+    setUserName(userInfo.data.username);
+    setEmail(userInfo.data.email);
+  }, [userInfo.data.username, userInfo.data.email]);
 
-//   useEffect(() => {
-//     setUserName(userInfo.username);
-//     setEmail(userInfo.email);
-//   }, [userInfo.email, userInfo.username]);
+  const dispatch = useDispatch();
 
-//   const dispatch = useDispatch();
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    if (password && password !== confirmPassword) {
+      toast.error("Passwords do not match");
+    } else {
+      try {
+        const updateData = {
+          _id: userInfo._id,
+          username,
+          email,
+        };
 
-//   const submitHandler = async (e) => {
-//     e.preventDefault();
-//     if (password !== confirmPassword) {
-//       toast.error("Passwords do not match");
-//     } else {
-//       try {
-//         const res = await updateProfile({
-//           _id: userInfo._id,
-//           username,
-//           email,
-//           password,
-//         }).unwrap();
-//         dispatch(setCredentials({ ...res }));
-//         toast.success("Profile updated successfully");
-//       } catch (err) {
-//         toast.error(err?.data?.message || err.error);
-//       }
-//     }
-//   };
+        if (password) {
+          if (!currentPassword) {
+            toast.error("Current password is required to update password");
+            return;
+          }
+          updateData.currentPassword = currentPassword;
+          updateData.password = password;
+        }
 
-//   return (
-//     <div className="mx-auto mt-[10rem] p-4 container">
-//       <div className="flex md:flex justify-center md:space-x-4 align-center">
-//         <div className="md:w-1/3">
-//           <h2 className="mb-4 font-semibold text-2xl">Update Profile</h2>
-//           <form onSubmit={submitHandler}>
-//             <div className="mb-4">
-//               <label className="block mb-2 text-white">Name</label>
-//               <input
-//                 type="text"
-//                 placeholder="Enter name"
-//                 className="form-input p-4 rounded-sm w-full"
-//                 value={username}
-//                 onChange={(e) => setUserName(e.target.value)}
-//               />
-//             </div>
+        const res = await updateProfile(updateData).unwrap();
+        dispatch(setCredentials({ ...res }));
+        toast.success("Profile updated successfully");
+        setCurrentPassword("");
+        setPassword("");
+        setConfirmPassword("");
+      } catch (err) {
+        toast.error(err?.data?.message || err.error);
+      }
+    }
+  };
 
-//             <div className="mb-4">
-//               <label className="block mb-2 text-white">Email Address</label>
-//               <input
-//                 type="email"
-//                 placeholder="Enter email"
-//                 className="form-input p-4 rounded-sm w-full"
-//                 value={email}
-//                 onChange={(e) => setEmail(e.target.value)}
-//               />
-//             </div>
+  return (
+    <div className="flex justify-center items-center min-h-screen">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="shadow-xl p-8 rounded-2xl w-full max-w-md"
+      >
+        <h2 className="mb-6 font-bold text-3xl text-center text-pink-500">
+          Update Profile
+        </h2>
+        <form onSubmit={submitHandler} className="space-y-6">
+          <div>
+            <label className="block mb-2 font-medium text-gray-300 text-sm">
+              Name
+            </label>
+            <input
+              type="text"
+              placeholder="Enter name"
+              className="border-gray-600 px-4 py-3 border rounded-lg focus:ring-2 focus:ring-pink-500 w-full text-black focus:outline-none transition duration-200"
+              value={username}
+              onChange={(e) => setUserName(e.target.value)}
+            />
+          </div>
 
-//             <div className="mb-4">
-//               <label className="block mb-2 text-white">Password</label>
-//               <input
-//                 type="password"
-//                 placeholder="Enter password"
-//                 className="form-input p-4 rounded-sm w-full"
-//                 value={password}
-//                 onChange={(e) => setPassword(e.target.value)}
-//               />
-//             </div>
+          <div>
+            <label className="block mb-2 font-medium text-gray-300 text-sm">
+              Email Address
+            </label>
+            <input
+              type="email"
+              placeholder="Enter email"
+              className="border-gray-600 px-4 py-3 border rounded-lg focus:ring-2 focus:ring-pink-500 w-full text-black focus:outline-none transition duration-200"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
 
-//             <div className="mb-4">
-//               <label className="block mb-2 text-white">Confirm Password</label>
-//               <input
-//                 type="password"
-//                 placeholder="Confirm password"
-//                 className="form-input p-4 rounded-sm w-full"
-//                 value={confirmPassword}
-//                 onChange={(e) => setConfirmPassword(e.target.value)}
-//               />
-//             </div>
+          <div>
+            <label className="block mb-2 font-medium text-gray-300 text-sm">
+              Current Password
+            </label>
+            <input
+              type="password"
+              placeholder="Enter current password"
+              className="border-gray-600 px-4 py-3 border rounded-lg focus:ring-2 focus:ring-pink-500 w-full text-black focus:outline-none transition duration-200"
+              value={currentPassword}
+              onChange={(e) => setCurrentPassword(e.target.value)}
+            />
+          </div>
 
-//             <div className="flex justify-between">
-//               <button
-//                 type="submit"
-//                 className="bg-pink-500 hover:bg-pink-600 px-4 py-2 rounded text-white"
-//               >
-//                 Update
-//               </button>
+          <div>
+            <label className="block mb-2 font-medium text-gray-300 text-sm">
+              New Password
+            </label>
+            <input
+              type="password"
+              placeholder="Enter new password"
+              className="border-gray-600 px-4 py-3 border rounded-lg focus:ring-2 focus:ring-pink-500 w-full text-black focus:outline-none transition duration-200"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
 
-//               <Link
-//                 to="/user-orders"
-//                 className="bg-pink-600 hover:bg-pink-700 px-4 py-2 rounded text-white"
-//               >
-//                 My Orders
-//               </Link>
-//             </div>
-//             {loadingUpdateProfile && <Loader />}
-//           </form>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
+          <div>
+            <label className="block mb-2 font-medium text-gray-300 text-sm">
+              Confirm New Password
+            </label>
+            <input
+              type="password"
+              placeholder="Confirm new password"
+              className="border-gray-600 px-4 py-3 border rounded-lg focus:ring-2 focus:ring-pink-500 w-full text-black focus:outline-none transition duration-200"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+          </div>
 
-// export default Profile;
+          <div className="flex justify-between items-center">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              type="submit"
+              disabled={loadingUpdateProfile}
+              className="flex justify-center items-center bg-pink-600 hover:bg-pink-700 focus:ring-opacity-50 px-6 py-3 rounded-lg focus:ring-2 focus:ring-pink-500 text-white focus:outline-none transition duration-200"
+            >
+              {loadingUpdateProfile ? (
+                <svg
+                  className="mr-3 w-5 h-5 text-white animate-spin"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
+                </svg>
+              ) : (
+                "Update"
+              )}
+            </motion.button>
 
-import React from "react";
-
-function Profile() {
-  return <div></div>;
-}
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Link
+                to="/user-orders"
+                className="bg-gray-600 hover: focus:ring-opacity-50 px-6 py-3 rounded-lg focus:ring-2 focus:ring-gray-500 text-white focus:outline-none transition duration-200"
+              >
+                My Orders
+              </Link>
+            </motion.div>
+          </div>
+        </form>
+      </motion.div>
+    </div>
+  );
+};
 
 export default Profile;
