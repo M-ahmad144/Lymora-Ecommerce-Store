@@ -20,20 +20,29 @@ import PrivateRoute from "./components/PrivateRoute.jsx";
 
 //user profile
 import Profile from "./pages/User/Profile.jsx";
+import AdminRoute from "./pages/Admin/AdminRoute.jsx";
+import UserList from "./pages/Admin/UserList.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    // App.jsx is the parent
     <Route path="/" element={<App />}>
       {/*private routes  */}
       <Route path="" element={<PrivateRoute />}>
-        {/* parent of Profile route is PrivateRoute */}
         <Route path="/profile" element={<Profile />} />
       </Route>
 
       {/* public routes */}
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+
+      {/* Admin routes */}
+      <Route path="/admin/*" element={<AdminRoute />}>
+        {/* <Route path="dashboard" element={<Dashboard />} />
+        <Route path="productlist" element={<ProductList />} />
+        <Route path="categorylist" element={<CategoryList />} />
+        <Route path="orderlist" element={<OrderList />} /> */}
+        <Route path="userlist" element={<UserList />} />
+      </Route>
     </Route>
   )
 );

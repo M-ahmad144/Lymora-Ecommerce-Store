@@ -53,7 +53,9 @@ const Profile = () => {
         setPassword("");
         setConfirmPassword("");
       } catch (err) {
-        toast.error(err?.data?.message || err.error);
+        toast.error(
+          err?.data?.message || err.error || "Failed to update profile"
+        );
       }
     }
   };
@@ -71,6 +73,7 @@ const Profile = () => {
         </h2>
         <form onSubmit={submitHandler} className="space-y-6">
           <div>
+            {/*username input */}
             <label className="block mb-2 font-medium text-gray-300 text-sm">
               Name
             </label>
@@ -84,6 +87,7 @@ const Profile = () => {
           </div>
 
           <div>
+            {/*email input */}
             <label className="block mb-2 font-medium text-gray-300 text-sm">
               Email Address
             </label>
@@ -97,6 +101,7 @@ const Profile = () => {
           </div>
 
           <div>
+            {/*password input */}
             <label className="block mb-2 font-medium text-gray-300 text-sm">
               Current Password
             </label>
@@ -110,6 +115,7 @@ const Profile = () => {
           </div>
 
           <div>
+            {/*password input */}
             <label className="block mb-2 font-medium text-gray-300 text-sm">
               New Password
             </label>

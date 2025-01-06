@@ -37,6 +37,39 @@ export const userApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+
+    //________________________Admin mutations___________________________________
+
+    getUsers: builder.query({
+      query: () => ({
+        url: USER_URL,
+      }),
+
+      // This tags helps  in cache management and invalidation. Here, we are associating the query with the "User" tag.
+      providesTags: ["User"],
+      keepUnusedDataFor: 5, // Data will be kept in memory for 5 seconds after it's no longer in use.
+    }),
+
+    deleteUser: builder.mutation({
+      query: (userId) => ({
+        url: `${USER_URL}/${userId}`,
+        method: "DELETE",
+      }),
+    }),
+    getUserDetails: builder.query({
+      query: (id) => ({
+        url: `${USER_URL}/${id}`,
+      }),
+      keepUnusedDataFor: 5,
+    }),
+    updateUser: builder.mutation({
+      query: (data) => ({
+        url: `${USER_URL}/${data.userId}`,
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: ["User"], // Invalidate the cache when a user is updated , fetching will be retriggered from the server
+    }),
   }),
 });
 
@@ -46,4 +79,8 @@ export const {
   useLoginMutation,
   useLogoutMutation,
   useProfileMutation,
+  useGetUsersQuery,
+  useDeleteUserMutation,
+  useGetUserDetailsQuery,
+  useUpdateUserMutation,
 } = userApiSlice;
