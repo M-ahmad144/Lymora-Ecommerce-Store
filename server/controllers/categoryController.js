@@ -2,6 +2,7 @@ const asyncHandler = require("../middlewares/asyncHandler");
 const Category = require("../models/categoryModel");
 
 const createCategory = asyncHandler(async (req, res) => {
+  console.log(req.body);
   const { name } = req.body;
   if (!name) {
     return res.status(400).json({ message: "Name is required" });
@@ -18,7 +19,7 @@ const updateCategory = asyncHandler(async (req, res) => {
   const { name } = req.body;
   const { categoryId } = req.params;
 
-  const category = await Category.findById(categoryId);
+  const category = await Category.findById({ _id: categoryId });
   if (!category) {
     return res.status(404).json({ message: "Category not found" });
   }
@@ -31,7 +32,7 @@ const updateCategory = asyncHandler(async (req, res) => {
 const removeCategory = asyncHandler(async (req, res) => {
   const { categoryId } = req.params;
 
-  const removed = await Category.findByIdAndRemove(categoryId);
+  const removed = await Category.findByIdAndDelete({ _id: categoryId });
   if (!removed) {
     return res.status(404).json({ message: "Category not found" });
   }
@@ -50,9 +51,9 @@ const listCategory = asyncHandler(async (req, res) => {
 });
 
 const readCategory = asyncHandler(async (req, res) => {
-  const { id } = req.params;
+  const { categoryId } = req.params;
 
-  const category = await Category.findById(id);
+  const category = await Category.findById({ _id: categoryId });
   if (!category) {
     return res.status(404).json({ message: "Category not found" });
   }
