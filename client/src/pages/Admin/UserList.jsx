@@ -14,6 +14,7 @@ import {
   createTheme,
   ThemeProvider,
   Paper,
+  Typography,
 } from "@mui/material";
 import { toast } from "react-toastify";
 import Loader from "../../components/Loader";
@@ -95,9 +96,15 @@ const UserList = () => {
     <ThemeProvider theme={darkTheme}>
       <div className="flex justify-center p-4">
         <div className="w-full md:w-4/5">
-          <h1 className="mb-6 font-semibold text-3xl text-center text-primary">
+          <Typography
+            variant="h4"
+            component="h1"
+            align="center"
+            color="primary"
+            gutterBottom
+          >
             Users
-          </h1>
+          </Typography>
           {isLoading ? (
             <div className="flex justify-center">
               <Loader />
@@ -109,7 +116,7 @@ const UserList = () => {
           ) : (
             <Paper elevation={3} sx={{ padding: 2 }}>
               <TableContainer>
-                <Table>
+                <Table sx={{ minWidth: "100%", overflowX: "auto" }}>
                   <TableHead>
                     <TableRow>
                       <TableCell align="center">ID</TableCell>
@@ -122,10 +129,12 @@ const UserList = () => {
                   <TableBody>
                     {users.map((user) => (
                       <TableRow key={user._id}>
-                        <TableCell align="center">{user._id}</TableCell>
-                        <TableCell align="center">
+                        <TableCell align="center" sx={{ fontSize: "0.8rem" }}>
+                          {user._id}
+                        </TableCell>
+                        <TableCell align="center" sx={{ fontSize: "0.8rem" }}>
                           {editableUser?.id === user._id ? (
-                            <div className="flex items-center">
+                            <div className="flex flex-wrap items-center">
                               <TextField
                                 variant="outlined"
                                 value={editableUser.username}
@@ -140,14 +149,14 @@ const UserList = () => {
                                 sx={{
                                   backgroundColor: "#333",
                                   borderRadius: "4px",
-                                  width: "200px",
+                                  width: "150px",
                                   marginRight: "8px",
                                 }}
                               />
                               <IconButton
                                 onClick={updateHandler}
                                 color="primary"
-                                sx={{ fontSize: "1.2rem" }}
+                                sx={{ fontSize: "1rem" }}
                               >
                                 <FaCheck />
                               </IconButton>
@@ -164,9 +173,9 @@ const UserList = () => {
                             </div>
                           )}
                         </TableCell>
-                        <TableCell align="center">
+                        <TableCell align="center" sx={{ fontSize: "0.8rem" }}>
                           {editableUser?.id === user._id ? (
-                            <div className="flex items-center">
+                            <div className="flex flex-wrap items-center">
                               <TextField
                                 variant="outlined"
                                 value={editableUser.email}
@@ -181,14 +190,14 @@ const UserList = () => {
                                 sx={{
                                   backgroundColor: "#333",
                                   borderRadius: "4px",
-                                  width: "200px",
+                                  width: "150px",
                                   marginRight: "8px",
                                 }}
                               />
                               <IconButton
                                 onClick={updateHandler}
                                 color="primary"
-                                sx={{ fontSize: "1.2rem" }}
+                                sx={{ fontSize: "1rem" }}
                               >
                                 <FaCheck />
                               </IconButton>
@@ -219,9 +228,9 @@ const UserList = () => {
                               color="secondary"
                               variant="contained"
                               sx={{
-                                minWidth: "40px",
-                                padding: "6px 12px",
-                                fontSize: "1rem",
+                                minWidth: "30px",
+                                padding: "4px 8px",
+                                fontSize: "0.8rem",
                               }}
                             >
                               <FaTrash />
