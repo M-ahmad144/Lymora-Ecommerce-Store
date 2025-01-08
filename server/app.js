@@ -14,6 +14,7 @@ const errorMiddleware = require("./middlewares/error");
 // Routes
 const userRoutes = require("./routes/userRoutes");
 const categoryRoutes = require("./routes/categoryRoutes");
+const productsRoutes = require("./routes/productsRoutes");
 // Middleware setup
 app.use(cors());
 app.use(cookieParser());
@@ -38,7 +39,8 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // Import and use routes
 app.use("/api/users", userRoutes);
-app.use("/api/category", categoryRoutes);
+app.use("/api/categories", categoryRoutes);
+app.use("/api/products", productsRoutes);
 // error middleware
 app.use(errorMiddleware);
 
