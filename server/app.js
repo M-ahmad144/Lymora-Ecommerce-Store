@@ -15,6 +15,8 @@ const errorMiddleware = require("./middlewares/error");
 const userRoutes = require("./routes/userRoutes");
 const categoryRoutes = require("./routes/categoryRoutes");
 const productsRoutes = require("./routes/productsRoutes");
+const uploadsRoutes = require("./routes/uploadsRoutes");
+
 // Middleware setup
 app.use(cors());
 app.use(cookieParser());
@@ -41,6 +43,11 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/api/users", userRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/products", productsRoutes);
+app.use("/api/uploads", uploadsRoutes);
+
+// Serve static uploads folder
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
 // error middleware
 app.use(errorMiddleware);
 
