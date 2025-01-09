@@ -100,7 +100,7 @@ const UserList = () => {
             variant="h4"
             component="h1"
             align="center"
-            color="primary"
+            className="text-pink-500"
             gutterBottom
           >
             Users

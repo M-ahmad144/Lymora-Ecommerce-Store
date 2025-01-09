@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { FaTimes } from "react-icons/fa";
-import { FiMenu } from "react-icons/fi"; // Use a different icon for the open state
+import { FiMenu } from "react-icons/fi";
 
 const AdminMenu = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
