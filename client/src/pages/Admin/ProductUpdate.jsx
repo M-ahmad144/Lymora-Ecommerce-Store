@@ -9,7 +9,7 @@ import {
 } from "../../redux/api/productSlice";
 import { useFetchCategoriesQuery } from "../../redux/api/categoryApiSlice";
 import { toast } from "react-toastify";
-
+import Loader from "../../components/Loader";
 const ProductUpdate = () => {
   const params = useParams();
   const navigate = useNavigate();
@@ -49,16 +49,11 @@ const ProductUpdate = () => {
     formData.append("image", e.target.files[0]);
     try {
       const res = await uploadProductImage(formData).unwrap();
-      toast.success("Image uploaded successfully", {
-        position: toast.POSITION.TOP_RIGHT,
-        autoClose: 2000,
-      });
+
+      toast.success("Image uploaded successfully");
       setImage(res.image);
     } catch (err) {
-      toast.error("Image upload failed", {
-        position: toast.POSITION.TOP_RIGHT,
-        autoClose: 2000,
-      });
+      toast.error("Image upload failed");
     }
   };
 
@@ -84,7 +79,7 @@ const ProductUpdate = () => {
         position: toast.POSITION.TOP_RIGHT,
         autoClose: 2000,
       });
-      navigate("/admin/allproductslist");
+      navigate("/admin/allproducts");
     } catch (err) {
       toast.error("Product update failed. Try again.", {
         position: toast.POSITION.TOP_RIGHT,
@@ -115,7 +110,11 @@ const ProductUpdate = () => {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Loader />
+      </div>
+    );
   }
 
   return (
@@ -123,72 +122,76 @@ const ProductUpdate = () => {
       <div className="sm:mx-[0] xl:mx-[9rem] container">
         <div className="flex md:flex-row flex-col">
           <AdminMenu />
-          <div className="p-3 md:w-3/4">
-            <h2 className="h-12">Update / Delete Product</h2>
+          <div className="p-3 w-full md:w-3/4">
+            <h2 className="mb-4 font-bold text-2xl text-center text-pink-500 text-pretty">
+              Update / Delete Product
+            </h2>
 
             {image && (
-              <div className="text-center">
+              <div className="mb-4 text-center">
                 <img
                   src={image}
                   alt="product"
-                  className="block mx-auto w-full h-[40%]"
+                  className="block mx-auto w-full max-w-xs md:max-w-md h-[40%]"
                 />
               </div>
             )}
 
             <div className="mb-3">
-              <label className="block px-4 py-11 rounded-lg w-full font-bold text-center text-white cursor-pointer">
+              <label className="block border-2 border-white px-6 py-3 border-transparent hover:border-blue-500 focus:border-blue-500 rounded-lg w-full font-bold text-center text-white cursor-pointer focus:outline-none">
                 {image ? "Change image" : "Upload image"}
                 <input
                   type="file"
                   accept="image/*"
                   onChange={uploadFileHandler}
-                  className="hidden text-white"
+                  className="hidden"
                 />
               </label>
             </div>
 
             <form onSubmit={handleSubmit}>
               <div className="p-3">
-                <div className="flex flex-wrap">
-                  <div>
+                {/* Two textboxes in one row for large screens */}
+                <div className="gap-4 grid grid-cols-1 md:grid-cols-2 mb-4">
+                  <div className="w-full">
                     <label>Name</label>
                     <input
                       type="text"
-                      className="bg-[#101011] mr-[5rem] mb-3 p-4 border rounded-lg w-[30rem] text-white"
+                      className="bg-[#101011] p-4 border rounded-lg w-full text-white"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                     />
                   </div>
 
-                  <div>
+                  <div className="w-full">
                     <label>Price</label>
                     <input
                       type="number"
-                      className="bg-[#101011] mb-3 p-4 border rounded-lg w-[30rem] text-white"
+                      className="bg-[#101011] p-4 border rounded-lg w-full text-white"
                       value={price}
                       onChange={(e) => setPrice(e.target.value)}
                     />
                   </div>
                 </div>
 
-                <div className="flex flex-wrap">
-                  <div>
+                {/* Another set of two textboxes */}
+                <div className="gap-4 grid grid-cols-1 md:grid-cols-2 mb-4">
+                  <div className="w-full">
                     <label>Quantity</label>
                     <input
                       type="number"
                       min="1"
-                      className="bg-[#101011] mr-[5rem] mb-3 p-4 border rounded-lg w-[30rem] text-white"
+                      className="bg-[#101011] p-4 border rounded-lg w-full text-white"
                       value={quantity}
                       onChange={(e) => setQuantity(e.target.value)}
                     />
                   </div>
 
-                  <div>
+                  <div className="w-full">
                     <label>Brand</label>
                     <input
                       type="text"
-                      className="bg-[#101011] mb-3 p-4 border rounded-lg w-[30rem] text-white"
+                      className="bg-[#101011] p-4 border rounded-lg w-full text-white"
                       value={brand}
                       onChange={(e) => setBrand(e.target.value)}
                     />
@@ -197,26 +200,27 @@ const ProductUpdate = () => {
 
                 <label>Description</label>
                 <textarea
-                  className="bg-[#101011] mb-3 p-2 border rounded-lg w-[95%] text-white"
+                  className="bg-[#101011] mb-4 p-2 border rounded-lg w-full text-white"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                 />
 
-                <div className="flex justify-between">
-                  <div>
+                {/* Last set of two textboxes */}
+                <div className="gap-4 grid grid-cols-1 md:grid-cols-2 mb-4">
+                  <div className="w-full">
                     <label>Count in Stock</label>
                     <input
                       type="text"
-                      className="bg-[#101011] mb-3 p-4 border rounded-lg w-[30rem] text-white"
+                      className="bg-[#101011] p-4 border rounded-lg w-full text-white"
                       value={stock}
                       onChange={(e) => setStock(e.target.value)}
                     />
                   </div>
 
-                  <div>
+                  <div className="w-full">
                     <label>Category</label>
                     <select
-                      className="bg-[#101011] mr-[5rem] mb-3 p-4 border rounded-lg w-[30rem] text-white"
+                      className="bg-[#101011] p-4 border rounded-lg w-full text-white"
                       value={category}
                       onChange={(e) => setCategory(e.target.value)}
                     >
@@ -230,17 +234,17 @@ const ProductUpdate = () => {
                   </div>
                 </div>
 
-                <div>
+                <div className="flex justify-between mt-4">
                   <button
                     type="submit"
-                    className="bg-green-600 mt-5 mr-6 px-10 py-4 rounded-lg font-bold text-lg"
+                    className="bg-green-600 mt-5 mb-4 md:mb-0 px-10 py-4 rounded-lg w-full md:w-auto font-bold text-lg"
                   >
                     Update
                   </button>
                   <button
                     type="button"
                     onClick={handleDelete}
-                    className="bg-pink-600 mt-5 px-10 py-4 rounded-lg font-bold text-lg"
+                    className="bg-pink-600 mt-5 mb-4 md:mb-0 px-10 py-4 rounded-lg w-full md:w-auto font-bold text-lg"
                   >
                     Delete
                   </button>
