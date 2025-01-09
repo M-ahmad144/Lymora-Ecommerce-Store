@@ -21,6 +21,7 @@ const validateProductFields = (fields) => {
 // Add New Product
 // =============================
 const addProduct = asyncHandler(async (req, res) => {
+  console.log(req.fields);
   const validationError = validateProductFields(req.fields);
   if (validationError) {
     return res.status(400).json({ error: validationError });
@@ -29,7 +30,9 @@ const addProduct = asyncHandler(async (req, res) => {
   const product = new Product({ ...req.fields });
 
   await product.save();
-  res.status(201).json(product);
+  res.status(201).json({
+    product,
+  });
 });
 
 // =============================

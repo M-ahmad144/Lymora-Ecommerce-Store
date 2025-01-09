@@ -38,13 +38,13 @@ const ProductList = () => {
       productData.append("brand", brand);
       productData.append("countInStock", stock);
 
-      const { data } = await createProduct(productData);
-
+      const data = await createProduct(productData);
+      console.log(data);
       if (data.error) {
         toast.error("Product create failed. Try Again.");
       } else {
-        toast.success(`${data.name} is created`);
-        navigate("/");
+        toast.success(`${data?.data?.product?.name} is created`);
+        // navigate("/");
       }
     } catch (error) {
       console.error(error);
@@ -179,7 +179,11 @@ const ProductList = () => {
                   placeholder="Choose Category"
                   className="bg-[#101011] mb-3 p-4 border rounded-lg w-[30rem] text-white"
                   onChange={(e) => setCategory(e.target.value)}
+                  value={category} // Ensure the selected value is controlled
                 >
+                  <option value="" disabled>
+                    Select the category
+                  </option>
                   {categories?.map((c) => (
                     <option key={c._id} value={c._id}>
                       {c.name}
