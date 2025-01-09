@@ -77,7 +77,6 @@ const UserList = () => {
           align="center"
           className="text-pink-500"
           gutterBottom
-          sx={{ color: "white" }} // Set the title text to white
         >
           Users
         </Typography>

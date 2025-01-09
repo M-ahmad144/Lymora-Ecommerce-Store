@@ -12,6 +12,7 @@ import {
   AiOutlineShoppingCart,
 } from "react-icons/ai";
 import { FaHeart } from "react-icons/fa";
+
 import "./Navigation.css";
 
 function Navigation() {
@@ -22,6 +23,7 @@ function Navigation() {
 
   const handleLogout = async () => {
     try {
+      // Call the API to perform logout
       await logoutApiCall().unwrap();
       dispatch(logout()); // Clear user info from Redux store
       navigate("/login");
@@ -44,12 +46,14 @@ function Navigation() {
     setShowSidebar(false);
   };
 
+  // Close dropdown if clicked outside
   const dropdownRef = useRef(null);
   const closeDropdown = () => {
     setDropdownOpen(false);
   };
   useEffect(() => {
     const handleClickOutside = (event) => {
+      // Check if the click is outside the dropdown
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         closeDropdown();
       }
@@ -66,8 +70,8 @@ function Navigation() {
       style={{ zIndex: "1000" }}
       id="navigation-container"
       className={`${
-        showSidebar ? "block" : "hidden"
-      } xl:flex lg:flex md:flex sm:hidden flex-col justify-between p-4 text-white bg-black text-[0.6rem] h-[100vh] fixed md:w-[300px] sm:w-[200px]`}
+        showSidebar ? "hidden" : "flex"
+      } xl:flex lg:flex md:hidden sm:hidden flex-col justify-between p-4 text-white bg-black  text-[0.6rem] h-[100vh] fixed`}
     >
       {/* Sidebar Links */}
       <div className="flex flex-col justify-center">
@@ -108,11 +112,13 @@ function Navigation() {
           onClick={toggleDropdown}
           className="flex items-center text-white hover:text-gray-300 focus:outline-none"
         >
+          {/* show user name if logged in */}
           {currentUser && (
             <span className="mr-2 font-medium text-white">
               {currentUser.data.username}
             </span>
           )}
+          {/* show dropdown arrow */}
           {currentUser && (
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -133,12 +139,14 @@ function Navigation() {
           )}
         </button>
 
+        {/* Dropdown Menu */}
         {dropdownOpen && currentUser && (
           <ul
             className={`absolute right-0 mt-2 w-36 bg-black rounded-md shadow-lg ring-1 ring-slate-900 ring-opacity-55 ${
               !currentUser.data.isAdmin ? "-top-20" : "-top-72"
             }`}
           >
+            {/* Admin-specific links */}
             {currentUser.data.isAdmin && (
               <>
                 <li>
@@ -184,6 +192,7 @@ function Navigation() {
               </>
             )}
 
+            {/* General user links */}
             <li>
               <Link
                 to="/profile"
