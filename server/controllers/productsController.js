@@ -97,7 +97,6 @@ const fetchProducts = asyncHandler(async (req, res) => {
 // Fetch Single Product by ID
 // =============================
 const fetchProductById = asyncHandler(async (req, res) => {
-  cosnole.log(req.params.id);
   const product = await Product.findById(req.params.id);
 
   if (!product) {

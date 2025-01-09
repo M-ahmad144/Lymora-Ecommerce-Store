@@ -96,11 +96,8 @@ const ProductUpdate = () => {
       if (!confirmation) return;
 
       const { data } = await deleteProduct(params.id);
-      toast.success(`"${data.name}" has been deleted`, {
-        position: toast.POSITION.TOP_RIGHT,
-        autoClose: 2000,
-      });
-      navigate("/admin/allproductslist");
+      toast.success(`"${data.name}" has been deleted successfully`);
+      navigate("/admin/allproducts");
     } catch (err) {
       toast.error("Delete failed. Try again.", {
         position: toast.POSITION.TOP_RIGHT,
