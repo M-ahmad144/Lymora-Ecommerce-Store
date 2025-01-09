@@ -8,6 +8,7 @@ const mongoSanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
 const hpp = require("hpp");
 const path = require("path");
+
 const app = express();
 const errorMiddleware = require("./middlewares/error");
 
@@ -38,6 +39,11 @@ app.use(express.urlencoded({ extended: true }));
 
 // Static files
 app.use(express.static(path.join(__dirname, "public")));
+app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
+console.log(
+  "Uploads folder is located at:",
+  path.join(__dirname, "../uploads")
+);
 
 // Import and use routes
 app.use("/api/users", userRoutes);
@@ -45,10 +51,7 @@ app.use("/api/categories", categoryRoutes);
 app.use("/api/products", productsRoutes);
 app.use("/api/uploads", uploadsRoutes);
 
-// Serve static uploads folder
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-
-// error middleware
+// Error middleware
 app.use(errorMiddleware);
 
 module.exports = app;
