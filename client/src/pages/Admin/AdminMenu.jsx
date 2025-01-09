@@ -16,7 +16,7 @@ const AdminMenu = () => {
       <button
         className={`${
           isMenuOpen ? "top-4 right-4" : "top-4 right-4"
-        } fixed z-50 bg-[#151515] p-3 rounded-lg shadow-lg transition-all duration-300 ease-in-out`}
+        } fixed z-50 bg-pink-500 p-3 rounded-lg shadow-lg transition-all duration-300 ease-in-out`}
         onClick={toggleMenu}
       >
         {isMenuOpen ? (
@@ -38,7 +38,7 @@ const AdminMenu = () => {
               { to: "/admin/dashboard", text: "Admin Dashboard" },
               { to: "/admin/categorylist", text: "Create Category" },
               { to: "/admin/productlist", text: "Create Product" },
-              { to: "/admin/allproductslist", text: "All Products" },
+              { to: "/admin/allproducts", text: "All Products" },
               { to: "/admin/userlist", text: "Manage Users" },
               { to: "/admin/orderlist", text: "Manage Orders" },
             ].map((item) => (
