@@ -21,7 +21,6 @@ const validateProductFields = (fields) => {
 // Add New Product
 // =============================
 const addProduct = asyncHandler(async (req, res) => {
-  console.log(req.fields);
   const validationError = validateProductFields(req.fields);
   if (validationError) {
     return res.status(400).json({ error: validationError });
@@ -98,6 +97,7 @@ const fetchProducts = asyncHandler(async (req, res) => {
 // Fetch Single Product by ID
 // =============================
 const fetchProductById = asyncHandler(async (req, res) => {
+  cosnole.log(req.params.id);
   const product = await Product.findById(req.params.id);
 
   if (!product) {

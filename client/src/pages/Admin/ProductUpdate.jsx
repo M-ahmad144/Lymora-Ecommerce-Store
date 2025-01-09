@@ -12,36 +12,35 @@ import { toast } from "react-toastify";
 
 const ProductUpdate = () => {
   const params = useParams();
-  const { data: productData } = useGetProductByIdQuery(params._id);
-
-  const [image, setImage] = useState(productData?.image || "");
-  const [name, setName] = useState(productData?.name || "");
-  const [description, setDescription] = useState(
-    productData?.description || ""
-  );
-  const [price, setPrice] = useState(productData?.price || "");
-  const [category, setCategory] = useState(productData?.category || "");
-  const [quantity, setQuantity] = useState(productData?.quantity || "");
-  const [brand, setBrand] = useState(productData?.brand || "");
-  const [stock, setStock] = useState(productData?.countInStock);
-
   const navigate = useNavigate();
 
+  const { data: productData, isLoading } = useGetProductByIdQuery(params.id);
   const { data: categories = [] } = useFetchCategoriesQuery();
+
+  const [image, setImage] = useState("");
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState("");
+  const [category, setCategory] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const [brand, setBrand] = useState("");
+  const [stock, setStock] = useState("");
 
   const [uploadProductImage] = useUploadProductImageMutation();
   const [updateProduct] = useUpdateProductMutation();
   const [deleteProduct] = useDeleteProductMutation();
 
+  // Populate form with product data on load
   useEffect(() => {
-    if (productData && productData._id) {
-      setName(productData.name);
-      setDescription(productData.description);
-      setPrice(productData.price);
-      setCategory(productData.category?._id);
-      setQuantity(productData.quantity);
-      setBrand(productData.brand);
-      setImage(productData.image);
+    if (productData) {
+      setImage(productData.image || "");
+      setName(productData.name || "");
+      setDescription(productData.description || "");
+      setPrice(productData.price || "");
+      setCategory(productData.category?._id || "");
+      setQuantity(productData.quantity || "");
+      setBrand(productData.brand || "");
+      setStock(productData.countInStock || "");
     }
   }, [productData]);
 
@@ -76,20 +75,16 @@ const ProductUpdate = () => {
       formData.append("brand", brand);
       formData.append("countInStock", stock);
 
-      const data = await updateProduct({ productId: params._id, formData });
+      const data = await updateProduct({
+        productId: params.id,
+        formData,
+      }).unwrap();
 
-      if (data?.error) {
-        toast.error(data.error, {
-          position: toast.POSITION.TOP_RIGHT,
-          autoClose: 2000,
-        });
-      } else {
-        toast.success(`Product successfully updated`, {
-          position: toast.POSITION.TOP_RIGHT,
-          autoClose: 2000,
-        });
-        navigate("/admin/allproductslist");
-      }
+      toast.success("Product successfully updated", {
+        position: toast.POSITION.TOP_RIGHT,
+        autoClose: 2000,
+      });
+      navigate("/admin/allproductslist");
     } catch (err) {
       toast.error("Product update failed. Try again.", {
         position: toast.POSITION.TOP_RIGHT,
@@ -100,13 +95,13 @@ const ProductUpdate = () => {
 
   const handleDelete = async () => {
     try {
-      let answer = window.confirm(
+      const confirmation = window.confirm(
         "Are you sure you want to delete this product?"
       );
-      if (!answer) return;
+      if (!confirmation) return;
 
-      const { data } = await deleteProduct(params._id);
-      toast.success(`"${data.name}" is deleted`, {
+      const { data } = await deleteProduct(params.id);
+      toast.success(`"${data.name}" has been deleted`, {
         position: toast.POSITION.TOP_RIGHT,
         autoClose: 2000,
       });
@@ -119,158 +114,143 @@ const ProductUpdate = () => {
     }
   };
 
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
   return (
-    <div className="mx-auto sm:px-6 lg:px-8 xl:px-20 p-4 container">
-      <div className="flex md:flex-row flex-col">
-        <AdminMenu />
-        <div className="p-3 md:w-3/4">
-          <h1 className="mb-4 font-bold text-2xl">Update / Delete Product</h1>
+    <>
+      <div className="sm:mx-[0] xl:mx-[9rem] container">
+        <div className="flex md:flex-row flex-col">
+          <AdminMenu />
+          <div className="p-3 md:w-3/4">
+            <h2 className="h-12">Update / Delete Product</h2>
 
-          {image && (
-            <div className="mb-4 text-center">
-              <img
-                src={image}
-                alt="product"
-                className="mx-auto w-full max-w-md"
-              />
+            {image && (
+              <div className="text-center">
+                <img
+                  src={image}
+                  alt="product"
+                  className="block mx-auto w-full h-[40%]"
+                />
+              </div>
+            )}
+
+            <div className="mb-3">
+              <label className="block px-4 py-11 rounded-lg w-full font-bold text-center text-white cursor-pointer">
+                {image ? "Change image" : "Upload image"}
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={uploadFileHandler}
+                  className="hidden text-white"
+                />
+              </label>
             </div>
-          )}
 
-          <div className="mb-4">
-            <label className="block mb-2 font-bold text-white">
-              {image ? image.name : "Upload image"}
-            </label>
-            <input
-              type="file"
-              name="image"
-              accept="image/*"
-              onChange={uploadFileHandler}
-              className="block border-gray-700 bg-gray-800 p-2 border rounded-lg w-full text-white"
-            />
-          </div>
+            <form onSubmit={handleSubmit}>
+              <div className="p-3">
+                <div className="flex flex-wrap">
+                  <div>
+                    <label>Name</label>
+                    <input
+                      type="text"
+                      className="bg-[#101011] mr-[5rem] mb-3 p-4 border rounded-lg w-[30rem] text-white"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                    />
+                  </div>
 
-          <form onSubmit={handleSubmit}>
-            <div className="gap-4 grid grid-cols-1 sm:grid-cols-2">
-              <div className="mb-4">
-                <label htmlFor="name" className="block font-bold text-white">
-                  Name
-                </label>
-                <input
-                  type="text"
-                  className="border-gray-700 bg-gray-800 p-3 border rounded-lg w-full text-white"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                />
-              </div>
+                  <div>
+                    <label>Price</label>
+                    <input
+                      type="number"
+                      className="bg-[#101011] mb-3 p-4 border rounded-lg w-[30rem] text-white"
+                      value={price}
+                      onChange={(e) => setPrice(e.target.value)}
+                    />
+                  </div>
+                </div>
 
-              <div className="mb-4">
-                <label htmlFor="price" className="block font-bold text-white">
-                  Price
-                </label>
-                <input
-                  type="number"
-                  className="border-gray-700 bg-gray-800 p-3 border rounded-lg w-full text-white"
-                  value={price}
-                  onChange={(e) => setPrice(e.target.value)}
-                />
-              </div>
+                <div className="flex flex-wrap">
+                  <div>
+                    <label>Quantity</label>
+                    <input
+                      type="number"
+                      min="1"
+                      className="bg-[#101011] mr-[5rem] mb-3 p-4 border rounded-lg w-[30rem] text-white"
+                      value={quantity}
+                      onChange={(e) => setQuantity(e.target.value)}
+                    />
+                  </div>
 
-              <div className="mb-4">
-                <label
-                  htmlFor="quantity"
-                  className="block font-bold text-white"
-                >
-                  Quantity
-                </label>
-                <input
-                  type="number"
-                  className="border-gray-700 bg-gray-800 p-3 border rounded-lg w-full text-white"
-                  value={quantity}
-                  onChange={(e) => setQuantity(e.target.value)}
-                />
-              </div>
+                  <div>
+                    <label>Brand</label>
+                    <input
+                      type="text"
+                      className="bg-[#101011] mb-3 p-4 border rounded-lg w-[30rem] text-white"
+                      value={brand}
+                      onChange={(e) => setBrand(e.target.value)}
+                    />
+                  </div>
+                </div>
 
-              <div className="mb-4">
-                <label htmlFor="brand" className="block font-bold text-white">
-                  Brand
-                </label>
-                <input
-                  type="text"
-                  className="border-gray-700 bg-gray-800 p-3 border rounded-lg w-full text-white"
-                  value={brand}
-                  onChange={(e) => setBrand(e.target.value)}
-                />
-              </div>
-
-              <div className="mb-4">
-                <label
-                  htmlFor="description"
-                  className="block font-bold text-white"
-                >
-                  Description
-                </label>
+                <label>Description</label>
                 <textarea
-                  className="border-gray-700 bg-gray-800 p-3 border rounded-lg w-full text-white"
+                  className="bg-[#101011] mb-3 p-2 border rounded-lg w-[95%] text-white"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                 />
-              </div>
 
-              <div className="mb-4">
-                <label
-                  htmlFor="countInStock"
-                  className="block font-bold text-white"
-                >
-                  Count In Stock
-                </label>
-                <input
-                  type="number"
-                  className="border-gray-700 bg-gray-800 p-3 border rounded-lg w-full text-white"
-                  value={stock}
-                  onChange={(e) => setStock(e.target.value)}
-                />
-              </div>
+                <div className="flex justify-between">
+                  <div>
+                    <label>Count in Stock</label>
+                    <input
+                      type="text"
+                      className="bg-[#101011] mb-3 p-4 border rounded-lg w-[30rem] text-white"
+                      value={stock}
+                      onChange={(e) => setStock(e.target.value)}
+                    />
+                  </div>
 
-              <div className="mb-4">
-                <label
-                  htmlFor="category"
-                  className="block font-bold text-white"
-                >
-                  Category
-                </label>
-                <select
-                  className="border-gray-700 bg-gray-800 p-3 border rounded-lg w-full text-white"
-                  onChange={(e) => setCategory(e.target.value)}
-                  value={category}
-                >
-                  {categories?.map((c) => (
-                    <option key={c._id} value={c._id}>
-                      {c.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
+                  <div>
+                    <label>Category</label>
+                    <select
+                      className="bg-[#101011] mr-[5rem] mb-3 p-4 border rounded-lg w-[30rem] text-white"
+                      value={category}
+                      onChange={(e) => setCategory(e.target.value)}
+                    >
+                      <option value="">Select Category</option>
+                      {categories.map((c) => (
+                        <option key={c._id} value={c._id}>
+                          {c.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
 
-            <div className="flex justify-between items-center mt-4">
-              <button
-                type="submit"
-                className="bg-green-600 px-10 py-4 rounded-lg font-bold text-lg text-white"
-              >
-                Update
-              </button>
-              <button
-                type="button"
-                onClick={handleDelete}
-                className="bg-red-600 px-10 py-4 rounded-lg font-bold text-lg text-white"
-              >
-                Delete
-              </button>
-            </div>
-          </form>
+                <div>
+                  <button
+                    type="submit"
+                    className="bg-green-600 mt-5 mr-6 px-10 py-4 rounded-lg font-bold text-lg"
+                  >
+                    Update
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleDelete}
+                    className="bg-pink-600 mt-5 px-10 py-4 rounded-lg font-bold text-lg"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
