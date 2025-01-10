@@ -6,7 +6,7 @@ import {
   useDeleteProductMutation,
   useGetProductByIdQuery,
   useUploadProductImageMutation,
-} from "../../redux/api/productSlice";
+} from "../../redux/api/productApiSlice";
 import { useFetchCategoriesQuery } from "../../redux/api/categoryApiSlice";
 import { toast } from "react-toastify";
 import Loader from "../../components/Loader";
@@ -75,16 +75,10 @@ const ProductUpdate = () => {
         formData,
       }).unwrap();
 
-      toast.success("Product successfully updated", {
-        position: toast.POSITION.TOP_RIGHT,
-        autoClose: 2000,
-      });
+      toast.success("Product successfully updated");
       navigate("/admin/allproducts");
     } catch (err) {
-      toast.error("Product update failed. Try again.", {
-        position: toast.POSITION.TOP_RIGHT,
-        autoClose: 2000,
-      });
+      toast.error("Product update failed. Try again.");
     }
   };
 

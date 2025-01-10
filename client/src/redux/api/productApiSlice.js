@@ -11,6 +11,7 @@ export const productApiSlice = apiSlice.injectEndpoints({
       }),
       keepUnusedDataFor: 5,
       providesTags: ["Products"],
+      invalidatesTags: ["Products"],
     }),
 
     // Fetch a single product by ID
@@ -25,6 +26,9 @@ export const productApiSlice = apiSlice.injectEndpoints({
     // Fetch all products
     allProducts: builder.query({
       query: () => `${PRODUCT_URL}/allProducts`,
+      keepUnusedDataFor: 5,
+      providesTags: ["Products"],
+      invalidatesTags: ["Products"],
     }),
 
     // Fetch product details by ID
@@ -42,7 +46,7 @@ export const productApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: productData,
       }),
-      invalidatesTags: ["Products"], // Invalidate products list after creating a new product
+      invalidatesTags: ["Products"],
     }),
 
     // Update a product by ID
