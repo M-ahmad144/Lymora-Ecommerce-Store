@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import HeartIcon from "./HeartIcon";
 
-const Product = ({ product }) => {
+const ProductCard = ({ product }) => {
   return (
     <div className="relative ml-[2rem] p-3 w-[30rem]">
       <div className="relative">
@@ -27,4 +27,4 @@ const Product = ({ product }) => {
   );
 };
 
-export default Product;
+export default ProductCard;

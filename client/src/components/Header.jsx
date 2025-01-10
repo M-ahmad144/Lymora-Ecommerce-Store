@@ -1,6 +1,6 @@
 import { useGetTopProductsQuery } from "../redux/api/productApiSlice";
 import Loader from "./Loader";
-import SmallProduct from "../pages/Products/SmallProduct";
+import TopProductsCardHeader from "../pages/Products/TopProductsCardHeader";
 import ProductCarousel from "../pages/Products/ProductCarousel";
 import { FaShoppingBag } from "react-icons/fa";
 
@@ -9,7 +9,7 @@ const Header = () => {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center align-center">
+      <div className="flex justify-center h-screen align-center">
         <Loader />
       </div>
     );
@@ -53,7 +53,7 @@ const Header = () => {
       <div className="md:flex justify-around hidden my-8 md:ml-10">
         <div className="gap-4 grid grid-cols-2">
           {data.map((product) => (
-            <SmallProduct key={product._id} product={product} />
+            <TopProductsCardHeader key={product._id} product={product} />
           ))}
         </div>
         <ProductCarousel />
@@ -62,7 +62,7 @@ const Header = () => {
       {/* For smaller screens, show only small products */}
       <div className="gap-4 md:hidden grid grid-cols-2 my-8 px-2">
         {data.map((product) => (
-          <SmallProduct key={product._id} product={product} />
+          <TopProductsCardHeader key={product._id} product={product} />
         ))}
       </div>
     </>

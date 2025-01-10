@@ -27,7 +27,7 @@ import CreateProduct from "./pages/Admin/CreateProduct.jsx";
 import ProductUpdate from "./pages/Admin/ProductUpdate.jsx";
 import AllProducts from "./pages/Admin/AllProducts.jsx";
 import Home from "./components/Home.jsx";
-import Product from "./pages/Products/Product.jsx";
+import Product from "./pages/Products/ProductCard.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(

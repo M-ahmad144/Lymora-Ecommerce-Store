@@ -71,7 +71,7 @@ function Navigation() {
       id="navigation-container"
       className={`${
         showSidebar ? "hidden" : "flex"
-      } xl:flex lg:flex md:hidden sm:hidden flex-col justify-between p-4 text-white bg-black  text-[0.6rem] h-[100vh] fixed`}
+      } xl:flex lg:flex md:hidden hidden flex-col justify-between p-4 text-white bg-black  text-[0.6rem] h-[100vh] fixed`}
     >
       {/* Sidebar Links */}
       <div className="flex flex-col justify-center">
@@ -114,7 +114,7 @@ function Navigation() {
         >
           {/* show user name if logged in */}
           {currentUser && (
-            <span className="mr-2 font-medium text-white">
+            <span className="font-light text-[0.1rem] text-white">
               {currentUser.data.username}
             </span>
           )}
