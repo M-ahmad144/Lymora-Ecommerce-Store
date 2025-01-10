@@ -37,7 +37,7 @@ const AdminMenu = () => {
             {[
               { to: "/admin/dashboard", text: "Admin Dashboard" },
               { to: "/admin/categorylist", text: "Create Category" },
-              { to: "/admin/productlist", text: "Create Product" },
+              { to: "/admin/product/create", text: "Create Product" },
               { to: "/admin/allproducts", text: "All Products" },
               { to: "/admin/userlist", text: "Manage Users" },
               { to: "/admin/orderlist", text: "Manage Orders" },

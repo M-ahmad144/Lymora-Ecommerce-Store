@@ -22,6 +22,8 @@ import {
   useUpdateUserMutation,
 } from "../../redux/api/userApiSlice";
 
+import AdminMenu from "./AdminMenu";
+
 const UserList = () => {
   const { data, isLoading, error } = useGetUsersQuery();
   const [deleteUser] = useDeleteUserMutation();
@@ -90,6 +92,7 @@ const UserList = () => {
           </Message>
         ) : (
           <TableContainer>
+            <AdminMenu />
             <Table sx={{ minWidth: "100%", overflowX: "auto" }}>
               <TableHead>
                 <TableRow>

@@ -10,6 +10,7 @@ import {
 import { useFetchCategoriesQuery } from "../../redux/api/categoryApiSlice";
 import { toast } from "react-toastify";
 import Loader from "../../components/Loader";
+
 const ProductUpdate = () => {
   const params = useParams();
   const navigate = useNavigate();
@@ -25,6 +26,7 @@ const ProductUpdate = () => {
   const [quantity, setQuantity] = useState("");
   const [brand, setBrand] = useState("");
   const [stock, setStock] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [uploadProductImage] = useUploadProductImageMutation();
   const [updateProduct] = useUpdateProductMutation();
@@ -32,12 +34,13 @@ const ProductUpdate = () => {
 
   // Populate form with product data on load
   useEffect(() => {
+    console.log(productData);
     if (productData) {
       setImage(productData.image || "");
       setName(productData.name || "");
       setDescription(productData.description || "");
       setPrice(productData.price || "");
-      setCategory(productData.category?._id || "");
+      setCategory(productData.category || "");
       setQuantity(productData.quantity || "");
       setBrand(productData.brand || "");
       setStock(productData.countInStock || "");
@@ -49,7 +52,6 @@ const ProductUpdate = () => {
     formData.append("image", e.target.files[0]);
     try {
       const res = await uploadProductImage(formData).unwrap();
-
       toast.success("Image uploaded successfully");
       setImage(res.image);
     } catch (err) {
@@ -84,13 +86,9 @@ const ProductUpdate = () => {
 
   const handleDelete = async () => {
     try {
-      const confirmation = window.confirm(
-        "Are you sure you want to delete this product?"
-      );
-      if (!confirmation) return;
-
       const { data } = await deleteProduct(params.id);
-      toast.success(`"${data.name}" has been deleted successfully`);
+      toast.success(`"${name}" has been deleted successfully`);
+      setIsModalOpen(false);
       navigate("/admin/allproducts");
     } catch (err) {
       toast.error("Delete failed. Try again.", {
@@ -99,6 +97,9 @@ const ProductUpdate = () => {
       });
     }
   };
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
   if (isLoading) {
     return (
@@ -142,7 +143,6 @@ const ProductUpdate = () => {
 
             <form onSubmit={handleSubmit}>
               <div className="p-3">
-                {/* Two textboxes in one row for large screens */}
                 <div className="gap-4 grid grid-cols-1 md:grid-cols-2 mb-4">
                   <div className="w-full">
                     <label>Name</label>
@@ -165,7 +165,6 @@ const ProductUpdate = () => {
                   </div>
                 </div>
 
-                {/* Another set of two textboxes */}
                 <div className="gap-4 grid grid-cols-1 md:grid-cols-2 mb-4">
                   <div className="w-full">
                     <label>Quantity</label>
@@ -196,7 +195,6 @@ const ProductUpdate = () => {
                   onChange={(e) => setDescription(e.target.value)}
                 />
 
-                {/* Last set of two textboxes */}
                 <div className="gap-4 grid grid-cols-1 md:grid-cols-2 mb-4">
                   <div className="w-full">
                     <label>Count in Stock</label>
@@ -234,7 +232,7 @@ const ProductUpdate = () => {
                   </button>
                   <button
                     type="button"
-                    onClick={handleDelete}
+                    onClick={openModal}
                     className="bg-pink-600 mt-5 mb-4 md:mb-0 px-10 py-4 rounded-lg w-full md:w-auto font-bold text-lg"
                   >
                     Delete
@@ -245,6 +243,32 @@ const ProductUpdate = () => {
           </div>
         </div>
       </div>
+
+      {/* Modal */}
+      {isModalOpen && (
+        <div className="z-50 fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
+          <div className="bg-black shadow-lg p-6 rounded w-full max-w-sm">
+            <h2 className="mb-4 font-bold text-lg">Confirm Delete</h2>
+            <p className="mb-6">
+              Are you sure you want to delete <strong>{name}</strong>?
+            </p>
+            <div className="flex justify-end space-x-4">
+              <button
+                onClick={closeModal}
+                className="bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded text-gray-800"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDelete}
+                className="bg-red-500 hover:bg-red-600 px-4 py-2 rounded text-white"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };

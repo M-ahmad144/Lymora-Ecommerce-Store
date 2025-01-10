@@ -3,7 +3,6 @@ import { apiSlice } from "./apiSlice";
 
 export const productApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    // Fetch products with an optional keyword filter
     getProducts: builder.query({
       query: ({ keyword }) => ({
         url: PRODUCT_URL,
@@ -77,6 +76,7 @@ export const productApiSlice = apiSlice.injectEndpoints({
         method: "DELETE",
       }),
       providesTags: ["Products"],
+      invalidatesTags: ["Products"],
     }),
 
     // Create a review for a product

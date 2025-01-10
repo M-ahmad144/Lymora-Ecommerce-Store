@@ -7,8 +7,8 @@ import {
 import { useFetchCategoriesQuery } from "../../redux/api/categoryApiSlice";
 import { toast } from "react-toastify";
 import AdminMenu from "./AdminMenu";
-
-const ProductList = () => {
+import Loader from "../../components/Loader";
+const CreateProduct = () => {
   const [image, setImage] = useState("");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -21,7 +21,7 @@ const ProductList = () => {
   const navigate = useNavigate();
 
   const [uploadProductImage] = useUploadProductImageMutation();
-  const [createProduct] = useCreateProductMutation();
+  const [createProduct, { isLoading }] = useCreateProductMutation();
   const { data: categories } = useFetchCategoriesQuery();
 
   const handleSubmit = async (e) => {
@@ -207,7 +207,7 @@ const ProductList = () => {
               onClick={handleSubmit}
               className="bg-pink-600 mt-5 px-10 py-4 rounded-lg w-full md:w-auto font-bold text-lg"
             >
-              Submit
+              {isLoading ? "creating..." : "Create"}
             </button>
           </div>
         </div>
@@ -216,4 +216,4 @@ const ProductList = () => {
   );
 };
 
-export default ProductList;
+export default CreateProduct;
