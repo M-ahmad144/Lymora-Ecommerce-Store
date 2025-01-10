@@ -114,7 +114,7 @@ function Navigation() {
         >
           {/* show user name if logged in */}
           {currentUser && (
-            <span className="font-light text-[0.1rem] text-white">
+            <span className="font-light text-[0.6rem] text-pink-500">
               {currentUser.data.username}
             </span>
           )}
