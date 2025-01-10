@@ -54,14 +54,16 @@ const AllProducts = () => {
                       </div>
 
                       <p className="mb-4 sm:w-[10rem] md:w-[20rem] lg:w-[30rem] xl:w-[30rem] text-gray-400 text-sm">
-                        {product?.description?.substring(0, 160)}...
+                        <p className="mb-4 sm:w-[10rem] md:w-[20rem] lg:w-[30rem] xl:w-[30rem] text-gray-400 text-sm">
+                          {product?.description?.substring(0, 300)}...
+                        </p>
                       </p>
 
                       <div className="flex justify-between">
                         <p className="font-semibold text-center text-xl">
                           ${product?.price}
                         </p>
-                        <span className="inline-flex items-center bg-pink-700 hover:bg-pink-800 dark:hover:bg-pink-700 dark:bg-pink-600 px-3 py-2 rounded-lg focus:ring-4 focus:ring-pink-300 dark:focus:ring-pink-800 font-medium text-center text-sm text-white focus:outline-none">
+                        <span className="inline-flex items-center bg-pink-700 hover:bg-pink-800 dark:hover:bg-pink-700 dark:bg-pink-600 px-3 py-2 rounded-lg focus:ring-4 focus:ring-pink-300 dark:focus:ring-pink-800 font-medium text-center text-sm text-white focus:outline-none s">
                           Update Product
                           <svg
                             className="ml-2 w-3.5 h-3.5"
