@@ -2,14 +2,14 @@ import { useGetTopProductsQuery } from "../redux/api/productApiSlice";
 import Loader from "./Loader";
 import SmallProduct from "../pages/Products/SmallProduct";
 import ProductCarousel from "../pages/Products/ProductCarousel";
-import { FaShoppingBag } from "react-icons/fa"; // Added icon
+import { FaShoppingBag } from "react-icons/fa";
 
 const Header = () => {
   const { data, isLoading, error } = useGetTopProductsQuery();
 
   if (isLoading) {
     return (
-      <div className="flex justify-center">
+      <div className="flex justify-center align-center">
         <Loader />
       </div>
     );
@@ -28,10 +28,19 @@ const Header = () => {
   return (
     <>
       {/* Header Section */}
-      <div className="flex justify-between items-center bg-pink-800 bg-opacity-40 shadow-lg backdrop-blur-lg mx-40 p-6 rounded-lg">
-        {/* Logo and Icon Section */}
-        <div className="flex items-center gap-4 ml-16">
-          <h1 className="font-bold text-3xl text-white">LYMORA</h1>
+      <div className="flex md:flex-row flex-col justify-between items-center bg-pink-800 bg-opacity-40 shadow-lg backdrop-blur-lg mx-4 md:mx-40 p-6 rounded-lg">
+        <div className="flex items-center gap-4 md:ml-16">
+          <h1 className="font-bold text-3xl text-white md:text-4xl">LYMORA</h1>
+        </div>
+
+        {/* Welcome Message */}
+        <div className="flex flex-col items-center mb-4 md:mb-0 text-lg text-white">
+          <p className="bg-clip-text bg-gradient-to-r from-pink-400 to-pink-600 font-semibold text-3xl text-transparent md:text-4xl animate-pulse">
+            Welcome to LYMORA!
+          </p>
+          <p className="mt-2 font-light text-base text-slate-100 md:text-xl italic tracking-wide">
+            Find the best products just for you
+          </p>
         </div>
 
         {/* Shopping Icon */}
