@@ -14,6 +14,7 @@ import {
 import { FaHeart } from "react-icons/fa";
 
 import "./Navigation.css";
+import FavoritesCount from "../Products/FavoritesCount";
 
 function Navigation() {
   const currentUser = useSelector((state) => state.auth.userInfo);
@@ -103,6 +104,7 @@ function Navigation() {
         >
           <FaHeart className="mt-[3rem] mr-2" size={26} />
           <span className="hidden nav-item-name mt-[3rem]">Favorites</span>
+          <FavoritesCount />
         </Link>
       </div>
 
