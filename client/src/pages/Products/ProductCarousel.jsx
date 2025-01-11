@@ -18,7 +18,7 @@ const ProductCarousel = () => {
   const settings = {
     dots: false,
     infinite: true,
-    speed: 400,
+    speed: 300,
     slidesToShow: 1,
     slidesToScroll: 1,
     arrows: true,
@@ -35,7 +35,7 @@ const ProductCarousel = () => {
       ) : (
         <Slider
           {...settings}
-          className="sm:block sm:w-[40rem] md:w-[56rem] lg:w-[50rem] xl:w-[50rem]"
+          className="md:w-[56rem] lg:w-[50rem] xl:w-[50rem]"
         >
           {products.map(
             ({

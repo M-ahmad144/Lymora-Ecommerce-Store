@@ -9,7 +9,7 @@ const Header = () => {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center h-screen align-center">
+      <div className="place-items-center grid h-screen">
         <Loader />
       </div>
     );

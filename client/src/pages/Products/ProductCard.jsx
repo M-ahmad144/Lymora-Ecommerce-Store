@@ -21,6 +21,25 @@ const ProductCard = ({ product }) => {
               $ {product.price}
             </span>
           </h2>
+
+          {/* Navigation Icon (Right Arrow) */}
+          <div className="flex items-center mt-2 text-pink-600 hover:text-pink-800 transition duration-200">
+            <span className="mr-2 text-sm">Explore</span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              className="mt-3 w-5 h-5"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M17 8l4-4m0 0l-4-4m4 4H3"
+              />
+            </svg>
+          </div>
         </Link>
       </div>
     </div>

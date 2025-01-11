@@ -8,7 +8,7 @@ const Ratings = ({ value, text, color }) => {
   return (
     <div className="flex items-center">
       {[...Array(fullStars)].map((_, index) => (
-        <FaStar key={index} className={`text-${color} ml-1`} />
+        <FaStar key={index} className={`text-yellow-500 ml-1`} />
       ))}
 
       {halfStars === 1 && <FaStarHalfAlt className={`text-${color} ml-1`} />}
@@ -21,10 +21,6 @@ const Ratings = ({ value, text, color }) => {
       </span>
     </div>
   );
-};
-
-Ratings.defaultProps = {
-  color: "yellow-500",
 };
 
 export default Ratings;
