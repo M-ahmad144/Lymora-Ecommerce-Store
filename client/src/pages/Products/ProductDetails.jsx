@@ -16,7 +16,6 @@ import {
   FaStore,
 } from "react-icons/fa";
 import moment from "moment";
-import HeartIcon from "./HeartIcon";
 import ProductTabs from "./ProductTabs";
 // import { addToCart } from "../../redux/features/cart/cartSlice";
 
