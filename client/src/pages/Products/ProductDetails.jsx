@@ -105,7 +105,6 @@ const ProductDetails = () => {
               alt={product.name}
               className="shadow-xl rounded-xl w-full lg:w-[500px] h-auto transition-transform duration-300 ease-in-out hover:scale-105"
             />
-            <HeartIcon product={product} />
           </div>
 
           {/* Product Details */}
