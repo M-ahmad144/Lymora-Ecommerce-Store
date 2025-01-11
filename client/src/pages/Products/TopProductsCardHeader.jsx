@@ -3,7 +3,7 @@ import HeartIcon from "./HeartIcon";
 
 const TopProductsCardHeader = ({ product }) => {
   return (
-    <div className="p-4 w-full sm:w-[12rem] md:w-[14rem] lg:w-[18rem] xl:w-[26rem]">
+    <div className="p-4 w-full sm:w-[12rem] md:w-[14rem] lg:w-[18rem] xl:w-[26rem] transform transition-transform duration-300 hover:scale-105">
       <div className="relative">
         <img
           src={product.image}
