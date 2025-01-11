@@ -13,11 +13,12 @@ import {
 } from "react-icons/fa";
 
 const ProductCarousel = () => {
-  const { data: products, isLoading, error } = useGetTopProductsQuery(); //gets the top products based upon rating
-
+  const { data: products, isLoading, error } = useGetTopProductsQuery();
+  // settings for the slider
   const settings = {
     dots: false,
     infinite: true,
+
     speed: 300,
     slidesToShow: 1,
     slidesToScroll: 1,
