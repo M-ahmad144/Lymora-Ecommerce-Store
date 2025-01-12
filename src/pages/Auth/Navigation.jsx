@@ -18,6 +18,8 @@ import FavoritesCount from "../Products/FavoritesCount";
 
 function Navigation() {
   const currentUser = useSelector((state) => state.auth.userInfo);
+  const { cartItems } = useSelector((state) => state.cart);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [logoutApiCall] = useLogoutMutation();
@@ -38,13 +40,6 @@ function Navigation() {
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
-  };
-  const toggleSidebar = () => {
-    setShowSidebar(!showSidebar);
-  };
-
-  const closeSidebar = () => {
-    setShowSidebar(false);
   };
 
   // Close dropdown if clicked outside
@@ -96,6 +91,16 @@ function Navigation() {
         >
           <AiOutlineShoppingCart className="mt-[3rem] mr-2" size={26} />
           <span className="hidden nav-item-name mt-[3rem]">Cart</span>
+
+          <div className="top-9 absolute">
+            {cartItems.length > 0 && (
+              <span>
+                <span className="bg-pink-500 px-1 py-0 rounded-full text-sm text-white">
+                  {cartItems.length}
+                </span>
+              </span>
+            )}
+          </div>
         </Link>
 
         <Link

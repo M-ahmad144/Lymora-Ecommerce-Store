@@ -11,52 +11,58 @@ import {
 } from "react-router-dom";
 import { createBrowserRouter } from "react-router-dom";
 
-//Auth
+// Auth routes
 import Login from "./pages/Auth/Login.jsx";
 import Register from "./pages/Auth/Register.jsx";
 
-//private route
+// Private Route component (for routes that require user to be logged in)
 import PrivateRoute from "./components/PrivateRoute.jsx";
 
-//user profile
+// User profile route
 import Profile from "./pages/User/Profile.jsx";
+
+// Admin routes (for admin-only pages)
 import AdminRoute from "./pages/Admin/AdminRoute.jsx";
 import UserList from "./pages/Admin/UserList.jsx";
 import CategoryList from "./pages/Admin/CategoryList.jsx";
 import CreateProduct from "./pages/Admin/CreateProduct.jsx";
 import ProductUpdate from "./pages/Admin/ProductUpdate.jsx";
 import AllProducts from "./pages/Admin/AllProducts.jsx";
+
+// General public routes
 import Home from "./components/Home.jsx";
 import Favorites from "./pages/Products/Favorites.jsx";
 import ProductDetails from "./pages/Products/ProductDetails.jsx";
+import Cart from "./pages/Cart/Cart.jsx";
 
+// Create browser router and define routes
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
-      {/* public routes */}
+      {/* Public routes (accessible by anyone) */}
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route index={true} path="/" element={<Home />} />
       <Route path="/favorites" element={<Favorites />} />
-      <Route path="/product/:id" element={<ProductDetails />} />
-
-      {/*private routes  */}
+      <Route path="/cart" element={<Cart />} />
+      <Route path="/product/:id" element={<ProductDetails />} />{" "}
+      {/* Private routes (accessible only by authenticated users) */}
       <Route path="" element={<PrivateRoute />}>
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/profile" element={<Profile />} />{" "}
       </Route>
-
-      {/* Admin routes */}
+      {/* Admin routes (accessible only by admin users) */}
       <Route path="/admin" element={<AdminRoute />}>
-        <Route path="userlist" element={<UserList />} />
-        <Route path="categorylist" element={<CategoryList />} />
-        <Route path="product/create" element={<CreateProduct />} />
-        <Route path="product/update/:id" element={<ProductUpdate />} />
-        <Route path="allproducts" element={<AllProducts />} />
+        <Route path="userlist" element={<UserList />} />{" "}
+        <Route path="categorylist" element={<CategoryList />} />{" "}
+        <Route path="product/create" element={<CreateProduct />} />{" "}
+        <Route path="product/update/:id" element={<ProductUpdate />} />{" "}
+        <Route path="allproducts" element={<AllProducts />} />{" "}
       </Route>
     </Route>
   )
 );
 
+// Render the app with router and redux provider
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <Provider store={store}>

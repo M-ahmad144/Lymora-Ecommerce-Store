@@ -1,6 +1,5 @@
 import { Link, useParams } from "react-router-dom";
 import { useGetProductsQuery } from "../redux/api/productApiSlice";
-import Loader from "./Loader";
 import Message from "./Message";
 import Header from "./Header";
 import ProductCard from "../pages/Products/ProductCard";
