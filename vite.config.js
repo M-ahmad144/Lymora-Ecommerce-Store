@@ -6,12 +6,12 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "http://localhost:5000",
+        target: "https://lymora-backend.vercel.app", // Added 'https://'
         changeOrigin: true,
-        secure: false,
+        secure: false, // Optional, allows for self-signed certificates (if needed)
       },
       "/uploads": {
-        target: "http://localhost:5000",
+        target: "https://lymora-backend.vercel.app", // Added 'https://'
         changeOrigin: true,
         secure: false,
       },
