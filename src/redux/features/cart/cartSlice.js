@@ -12,7 +12,7 @@ const cartSlice = createSlice({
     addToCart: (state, action) => {
       const { user, rating, numReviews, reviews, ...item } = action.payload; // Remove user, rating, numReviews, and reviews
       const existItem = state.cartItems.find((x) => x._id === item._id);
-      // If the item already exists in the cart, update its quantity
+
       if (existItem) {
         state.cartItems = state.cartItems.map((x) =>
           x._id === existItem._id ? item : x
