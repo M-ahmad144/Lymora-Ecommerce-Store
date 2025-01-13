@@ -8,18 +8,18 @@ import {
   setChecked,
 } from "../../redux/features/shop/shopSlice";
 import Loader from "../../components/Loader";
-import ProductCard from "../Products/ProductCard";
+import ProductItem from "../Products/ShopProductItem";
 
 const Shop = () => {
   const dispatch = useDispatch();
   const { categories, products, checked, radio } = useSelector(
     (state) => state.shop
   );
-
   // Fetch categories and products
   const { data: categoryData, isLoading: categoryLoading } =
     useFetchCategoriesQuery();
   const { data: productData, isLoading: productLoading } =
+    //get the filtered products if the filter is given otherwise get all products
     useGetFilteredProductsQuery({ checked, radio });
 
   // Local states
@@ -144,7 +144,7 @@ const Shop = () => {
             ) : (
               products.map((p) => (
                 <div className="p-3" key={p._id}>
-                  <ProductCard p={p} />
+                  <ProductItem p={p} />
                 </div>
               ))
             )}
