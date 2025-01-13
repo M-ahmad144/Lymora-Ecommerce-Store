@@ -7,7 +7,7 @@ import {
 import { useFetchCategoriesQuery } from "../../redux/api/categoryApiSlice";
 import { toast } from "react-toastify";
 import AdminMenu from "./AdminMenu";
-import Loader from "../../components/Loader";
+
 const CreateProduct = () => {
   const [image, setImage] = useState("");
   const [name, setName] = useState("");
@@ -27,39 +27,57 @@ const CreateProduct = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-      const productData = new FormData();
-      productData.append("image", image);
-      productData.append("name", name);
-      productData.append("description", description);
-      productData.append("price", price);
-      productData.append("category", category);
-      productData.append("quantity", quantity);
-      productData.append("brand", brand);
-      productData.append("countInStock", stock);
+    // Prepare product data
+    const productData = new FormData();
+    productData.append("image", image); // Attach the image file
+    productData.append("name", name);
+    productData.append("description", description);
+    productData.append("price", price);
+    productData.append("category", category);
+    productData.append("quantity", quantity);
+    productData.append("brand", brand);
+    productData.append("countInStock", stock);
 
-      const data = await createProduct(productData);
-      if (data.error) {
-        toast.error("Product create failed. Try Again.");
-      } else {
-        toast.success(`${data?.data?.product?.name} is created`);
-        navigate("/admin/allproducts");
-      }
-    } catch (error) {
-      console.error(error);
-      toast.error("Product create failed. Try Again.");
+    // Upload the image to Cloudinary (via backend image upload route)
+    const imageUploadResponse = await uploadProductImage(productData);
+    if (imageUploadResponse.error) {
+      toast.error("Image upload failed. Try Again.");
+      return;
+    }
+
+    const imageUrl = imageUploadResponse.data.imageUrl;
+    console.log(imageUploadResponse);
+
+    // Now, create the product including the image URL
+    const productDataForCreation = {
+      ...productData,
+      imageUrl,
+    };
+
+    const data = await createProduct(productDataForCreation);
+    if (data.error) {
+      toast.error("Product creation failed. Try Again.");
+    } else {
+      toast.success(`${data?.data?.product?.name} is created`);
+      navigate("/admin/allproducts");
     }
   };
 
   const uploadFileHandler = async (e) => {
+    const file = e.target.files[0];
+    if (!file) {
+      toast.error("Please select an image file.");
+      return;
+    }
+
     const formData = new FormData();
-    formData.append("image", e.target.files[0]);
+    formData.append("image", file);
 
     try {
       const res = await uploadProductImage(formData).unwrap();
       toast.success(res.message);
-      setImage(res.image);
-      setImageUrl(res.image);
+      setImage(file);
+      setImageUrl(res.imageUrl); // Use the Cloudinary URL
     } catch (error) {
       toast.error(error?.data?.message || error.error);
     }
