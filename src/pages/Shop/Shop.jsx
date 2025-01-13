@@ -15,6 +15,7 @@ const Shop = () => {
   const { categories, products, checked, radio } = useSelector(
     (state) => state.shop
   );
+
   // Fetch categories and products
   const { data: categoryData, isLoading: categoryLoading } =
     useFetchCategoriesQuery();
@@ -57,8 +58,8 @@ const Shop = () => {
   // Handle checkbox selection for categories
   const handleCheck = (isChecked, id) => {
     const updatedChecked = isChecked
-      ? [...checked, id]
-      : checked.filter((c) => c !== id);
+      ? [...checked, id] //Add the id to the checked array
+      : checked.filter((c) => c !== id); //Remove the id from the checked array
     dispatch(setChecked(updatedChecked));
   };
 
@@ -73,11 +74,11 @@ const Shop = () => {
     <div className="mx-auto container">
       <div className="flex md:flex-row">
         {/* Filters */}
-        <aside className="bg-[#151515] mt-2 mb-2 p-3">
-          <h2 className="bg-black mb-2 py-2 rounded-full text-center h4">
+        <aside className="bg-[#151515] mt-2 mb-2 p-3 sm:w-[8rem] md:w-[30rem]">
+          <h2 className="bg-black mb-2 px-2 py-1 rounded-full w-full text-center">
             Filter by Categories
           </h2>
-          <div className="p-5 w-[15rem]">
+          <div className="p-5">
             {categories?.map((c) => (
               <div key={c._id} className="flex items-center mb-2">
                 <input
@@ -118,18 +119,21 @@ const Shop = () => {
           <h2 className="bg-black mb-2 py-2 rounded-full text-center h4">
             Filter by Price
           </h2>
-          <div className="p-5 w-[15rem]">
+          <div className="p-5">
             <input
               type="text"
               placeholder="Enter Price"
               value={priceFilter}
               onChange={(e) => setPriceFilter(e.target.value)}
-              className="focus:border-pink-300 px-3 py-2 border rounded-lg focus:ring w-full focus:outline-none placeholder-gray-400"
+              className="focus:border-pink-300 bg-inherit px-3 py-2 border rounded-lg focus:ring w-full focus:outline-none placeholder-gray-400"
             />
           </div>
 
-          <div className="p-5 pt-0">
-            <button className="my-4 border w-full" onClick={resetFilters}>
+          <div className="bg-inherit p-5 pt-0">
+            <button
+              className="hover:bg-pink-600 my-4 py-2 border rounded-full w-full hover:text-white"
+              onClick={resetFilters}
+            >
               Reset
             </button>
           </div>
@@ -137,10 +141,11 @@ const Shop = () => {
 
         {/* Products */}
         <main className="p-3">
-          <h2 className="mb-2 text-center h4">{products?.length} Products</h2>
-          <div className="flex flex-wrap">
+          <div className="gap-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {productLoading || products.length === 0 ? (
-              <Loader />
+              <div className="absolute inset-0 flex justify-center items-center">
+                <Loader />
+              </div>
             ) : (
               products.map((p) => (
                 <div className="p-3" key={p._id}>

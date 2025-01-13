@@ -166,7 +166,7 @@ function Navigation() {
                 </li>
                 <li>
                   <Link
-                    to="/admin/allproducts"
+                    to="/admin/product/create"
                     className="block hover:bg-gray-700 px-4 py-2 text-sm text-white"
                   >
                     Products

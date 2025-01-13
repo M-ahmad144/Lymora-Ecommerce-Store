@@ -15,17 +15,16 @@ const ProductItem = ({ p }) => {
   };
 
   return (
-    <div className="relative rounded-lg max-w-sm shaodw">
+    <div className="relative shadow-md rounded-lg max-w-full">
       <section className="relative">
         <Link to={`/product/${p._id}`}>
           <span className="right-3 bottom-3 absolute bg-pink-100 dark:bg-pink-900 mr-2 px-2.5 py-0.5 rounded-full font-medium text-pink-800 text-sm dark:text-pink-300">
             {p?.brand}
           </span>
           <img
-            className="w-full cursor-pointer"
+            className="rounded-md w-full h-[200px] transform transition-transform duration-300 hover:scale-105 object-cover"
             src={p.image}
             alt={p.name}
-            style={{ height: "170px", objectFit: "cover" }}
           />
         </Link>
         <HeartIcon product={p} />
@@ -33,7 +32,7 @@ const ProductItem = ({ p }) => {
 
       <div className="p-5">
         <div className="flex justify-between">
-          <h5 className="mb-2 text-whiet text-xl dark:text-white">{p?.name}</h5>
+          <h5 className="mb-2 text-white text-xl dark:text-white">{p?.name}</h5>
 
           <p className="font-semibold text-pink-500">
             {p?.price?.toLocaleString("en-US", {
