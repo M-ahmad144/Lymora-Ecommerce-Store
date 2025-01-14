@@ -18,7 +18,8 @@ const ProductUpdate = () => {
   const { data: productData, isLoading } = useGetProductByIdQuery(params.id);
   const { data: categories = [] } = useFetchCategoriesQuery();
 
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState(null); // This will hold the image file.
+  const [imageUrl, setImageUrl] = useState(""); // This will hold the image URL (after upload).
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
@@ -27,16 +28,15 @@ const ProductUpdate = () => {
   const [brand, setBrand] = useState("");
   const [stock, setStock] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [loading, setIsLoading] = useState(false);
   const [uploadProductImage] = useUploadProductImageMutation();
-  const [updateProduct] = useUpdateProductMutation();
+  const [updateProduct, { isLoading: isUpdating }] = useUpdateProductMutation();
   const [deleteProduct] = useDeleteProductMutation();
 
   // Populate form with product data on load
   useEffect(() => {
-    console.log(productData);
     if (productData) {
-      setImage(productData.image || "");
+      setImageUrl(productData.image || "");
       setName(productData.name || "");
       setDescription(productData.description || "");
       setPrice(productData.price || "");
@@ -47,32 +47,42 @@ const ProductUpdate = () => {
     }
   }, [productData]);
 
+  // Upload image handler
   const uploadFileHandler = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
     const formData = new FormData();
-    formData.append("image", e.target.files[0]);
+    formData.append("image", file);
+
     try {
+      setIsLoading(true);
       const res = await uploadProductImage(formData).unwrap();
       toast.success("Image uploaded successfully");
-      setImage(res.image);
+      setImage(file);
+      setImageUrl(res.imageUrl); // Set the image URL after upload.
     } catch (err) {
       toast.error("Image upload failed");
     }
   };
 
+  // Handle product update form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const formData = new FormData();
-      formData.append("image", image);
-      formData.append("name", name);
-      formData.append("description", description);
-      formData.append("price", price);
-      formData.append("category", category);
-      formData.append("quantity", quantity);
-      formData.append("brand", brand);
-      formData.append("countInStock", stock);
 
-      const data = await updateProduct({
+    const formData = new FormData();
+    formData.append("image", image);
+    formData.append("name", name);
+    formData.append("description", description);
+    formData.append("price", price);
+    formData.append("category", category);
+    formData.append("quantity", quantity);
+    formData.append("brand", brand);
+    formData.append("countInStock", stock);
+    formData.append("imageUrl", imageUrl);
+
+    try {
+      await updateProduct({
         productId: params.id,
         formData,
       }).unwrap();
@@ -84,9 +94,10 @@ const ProductUpdate = () => {
     }
   };
 
+  // Handle product deletion
   const handleDelete = async () => {
     try {
-      const { data } = await deleteProduct(params.id);
+      await deleteProduct(params.id).unwrap();
       toast.success(`"${name}" has been deleted successfully`);
       setIsModalOpen(false);
       navigate("/admin/allproducts");
@@ -98,6 +109,7 @@ const ProductUpdate = () => {
     }
   };
 
+  // Modal open/close
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
@@ -119,10 +131,10 @@ const ProductUpdate = () => {
               Update / Delete Product
             </h2>
 
-            {image && (
+            {imageUrl && (
               <div className="mb-4 text-center">
                 <img
-                  src={image}
+                  src={imageUrl}
                   alt="product"
                   className="block mx-auto w-full max-w-xs md:max-w-md h-[40%]"
                 />
@@ -131,7 +143,7 @@ const ProductUpdate = () => {
 
             <div className="mb-3">
               <label className="block border-2 border-white px-6 py-3 border-transparent hover:border-blue-500 focus:border-blue-500 rounded-lg w-full font-bold text-center text-white cursor-pointer focus:outline-none">
-                {image ? "Change image" : "Upload image"}
+                {image ? image.name : loading ? "Uploading..." : "Upload Image"}
                 <input
                   type="file"
                   accept="image/*"
@@ -228,7 +240,7 @@ const ProductUpdate = () => {
                     type="submit"
                     className="bg-green-600 mt-5 mb-4 md:mb-0 px-10 py-4 rounded-lg w-full md:w-auto font-bold text-lg"
                   >
-                    Update
+                    {isUpdating ? "Updating..." : "Update"}
                   </button>
                   <button
                     type="button"

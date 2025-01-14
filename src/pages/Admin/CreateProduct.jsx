@@ -19,6 +19,7 @@ const CreateProduct = () => {
   const [brand, setBrand] = useState("");
   const [stock, setStock] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const navigate = useNavigate();
 
   const [uploadProductImage] = useUploadProductImageMutation();
@@ -54,7 +55,7 @@ const CreateProduct = () => {
       if (data.error) {
         toast.error("Product creation failed. Please try again.");
       } else {
-        toast.success(`${data.name} has been created successfully.`);
+        toast.success(`${data?.product?.name} has been created successfully.`);
         navigate("/admin/allproducts");
       }
     } catch (error) {
@@ -78,10 +79,12 @@ const CreateProduct = () => {
     formData.append("image", file);
 
     try {
+      setIsUploading(true);
       const res = await uploadProductImage(formData).unwrap();
       toast.success("Image uploaded successfully!");
       setImage(file);
       setImageUrl(res.imageUrl); // Set the image URL returned by backend
+      setIsUploading(false);
     } catch (error) {
       console.error("Error uploading image:", error);
       toast.error(error?.data?.message || "Image upload failed. Try again.");
@@ -108,8 +111,12 @@ const CreateProduct = () => {
           )}
 
           <div className="mb-3">
-            <label className="block hover:bg-gray-950 px-4 py-2 border rounded-lg w-full font-bold text-center text-white cursor-pointer">
-              {image ? image.name : "Upload Image"}
+            <label className="block hover:border-pink-500p px-4 py-2 border rounded-lg w-full font-bold text-center text-white cursor-pointer">
+              {image
+                ? image.name
+                : isUploading
+                ? "Uploading..."
+                : "Upload Image"}
               <input
                 type="file"
                 name="image"

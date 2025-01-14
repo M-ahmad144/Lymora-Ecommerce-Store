@@ -46,6 +46,8 @@ export const productApiSlice = apiSlice.injectEndpoints({
         body: productData,
       }),
       invalidatesTags: ["Products"],
+      providesTags: ["Products"],
+      keepUnusedDataFor: 5,
     }),
 
     // Update a product by ID

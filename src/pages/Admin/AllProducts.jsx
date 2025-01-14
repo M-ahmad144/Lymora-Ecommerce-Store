@@ -14,6 +14,8 @@ const AllProducts = () => {
       </div>
     );
   }
+  console.log(products);
+  console.log(products.length);
 
   if (isError) {
     return (
