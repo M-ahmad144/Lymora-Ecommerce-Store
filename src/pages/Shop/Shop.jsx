@@ -56,6 +56,10 @@ const Shop = () => {
   }, [productData]);
 
   // Handle checkbox selection for categories
+  //--------categories filtering flow:
+  //-------- Checking/unchecking adds/removes category ID in Redux.
+  //-------- Updated checked array triggers re-fetch of products.
+
   const handleCheck = (isChecked, id) => {
     const updatedChecked = isChecked
       ? [...checked, id] //Add the id to the checked array

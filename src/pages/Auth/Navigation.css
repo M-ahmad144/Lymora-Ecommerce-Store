@@ -1,18 +1,49 @@
+/* Sidebar styles */
 #navigation-container {
-  width: 3.2%;
-  transition: width 0.3s ease-in-out;
-  overflow: hidden;
-}
-#navigation-container:hover {
-  width: 15%;
-  font-size: large;
-}
-.nav-item-name {
-  display: none;
-  transition: opacity 0.2s ease-in-out;
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: -100%;
+  transition: left 0.3s ease-in-out;
+  z-index: 11111;
 }
 
-#navigation-container:hover .nav-item-name {
+#navigation-container.open {
+  left: 0;
+}
+
+/* Mobile-specific styles */
+#mobile-navigation-toggle {
   display: block;
-  opacity: 1;
+}
+
+@media (max-width: 1024px) {
+  /* Hide the sidebar by default on mobile */
+  #navigation-container {
+    left: -100%;
+  }
+
+  #mobile-navigation-toggle {
+    display: block;
+  }
+}
+
+@media (min-width: 1025px) {
+  /* Hide the mobile toggle icon and use the sidebar on larger screens */
+  #mobile-navigation-toggle {
+    display: none;
+  }
+
+  #navigation-container {
+    left: 0;
+    width: 3.5%;
+    height: 100vh; /* Full height initially */
+    transition: width 0.3s ease-in-out, height 0.3s ease-in-out; /* Smooth transition for both width and height */
+  }
+
+  /* When hovering over the sidebar, increase width and height */
+  #navigation-container:hover {
+    width: 10%;
+  }
 }
