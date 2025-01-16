@@ -51,7 +51,7 @@ const ProductItem = ({ p }) => {
             to={`/product/${p._id}`}
             className="inline-flex items-center bg-pink-700 hover:bg-pink-800 dark:hover:bg-pink-700 dark:bg-pink-600 px-3 py-2 rounded-lg focus:ring-4 focus:ring-pink-300 dark:focus:ring-pink-800 font-medium text-center text-sm text-white focus:outline-none"
           >
-            Read More
+            Details
             <svg
               className="ml-2 w-3.5 h-3.5"
               aria-hidden="true"

@@ -15,18 +15,23 @@ const Shipping = () => {
   const [formData, setFormData] = useState({
     address: shippingAddress?.address || "",
     city: shippingAddress?.city || "",
-    postalCode: shippingAddress?.postalCode || "",
     country: shippingAddress?.country || "",
+    postalCode: shippingAddress?.postalCode || "",
     paymentMethod: "PayPal",
   });
 
   const { address, city, postalCode, country, paymentMethod } = formData;
 
   useEffect(() => {
-    if (!shippingAddress?.address) {
-      navigate("/shipping");
-    }
-  }, [navigate, shippingAddress]);
+    // Update formData if shippingAddress changes
+    setFormData((prev) => ({
+      ...prev,
+      address: shippingAddress?.address || "",
+      city: shippingAddress?.city || "",
+      postalCode: shippingAddress?.postalCode || "",
+      country: shippingAddress?.country || "",
+    }));
+  }, [shippingAddress]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -48,26 +53,30 @@ const Shipping = () => {
           Shipping Information
         </h1>
 
-        {["Address", "City", "Postal Code", "Country"].map((field) => (
-          <div key={field} className="mb-4">
-            <label
-              htmlFor={field.toLowerCase().replace(" ", "")}
-              className="block mb-1 font-medium text-gray-300 text-sm"
-            >
-              {field}
-            </label>
-            <input
-              type="text"
-              id={field.toLowerCase().replace(" ", "")}
-              name={field.toLowerCase().replace(" ", "")}
-              value={formData[field.toLowerCase().replace(" ", "")]}
-              onChange={handleChange}
-              placeholder={`Enter ${field.toLowerCase()}`}
-              required
-              className="p-2 border rounded focus:ring-2 focus:ring-pink-800 w-full text-black text-sm focus:outline-none"
-            />
-          </div>
-        ))}
+        {Object.keys(formData).map((key) => {
+          if (key === "paymentMethod") return null; // Skip payment method for now
+
+          return (
+            <div key={key} className="mb-4">
+              <label
+                htmlFor={key}
+                className="block mb-1 font-medium text-gray-300 text-sm"
+              >
+                {key.charAt(0).toUpperCase() + key.slice(1)}
+              </label>
+              <input
+                type="text"
+                id={key}
+                name={key}
+                value={formData[key]}
+                onChange={handleChange}
+                placeholder={`Enter ${key}`}
+                required
+                className="p-2 border rounded focus:ring-2 focus:ring-pink-800 w-full text-black text-sm focus:outline-none"
+              />
+            </div>
+          );
+        })}
 
         <div className="mb-4">
           <label className="block mb-1 font-medium text-gray-300 text-sm">
