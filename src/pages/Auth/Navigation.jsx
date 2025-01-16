@@ -75,36 +75,41 @@ function Navigation() {
         <div className="flex flex-col justify-center">
           <Link
             to="/"
-            className="flex items-center transform transition-transform hover:translate-x-2"
+            className="flex items-center transform transition-transform hover:translate-x-2 group"
           >
             <AiOutlineHome className="mt-[3rem] mr-2" size={26} />
-            <span className="hidden nav-item-name mt-[3rem]">Home</span>
+            <span className="group-hover:inline hidden mt-[3rem]">Home</span>
           </Link>
+
           <Link
             to="/shop"
-            className="flex items-center transform transition-transform hover:translate-x-2"
+            className="flex items-center transform transition-transform hover:translate-x-2 group"
           >
             <AiOutlineShopping className="mt-[3rem] mr-2" size={26} />
-            <span className="hidden nav-item-name mt-[3rem]">Shop</span>
+            <span className="group-hover:inline hidden mt-[3rem]">Shop</span>
           </Link>
+
           <Link
             to="/cart"
-            className="flex items-center transform transition-transform hover:translate-x-2"
+            className="relative flex items-center transform transition-transform hover:translate-x-2 group"
           >
             <AiOutlineShoppingCart className="mt-[3rem] mr-2" size={26} />
-            <span className="hidden nav-item-name mt-[3rem]">Cart</span>
+            <span className="group-hover:inline hidden mt-[3rem]">Cart</span>
             {cartItems.length > 0 && (
-              <span className="top-9 absolute bg-pink-500 px-1 py-0 rounded-full text-sm text-white">
+              <span className="top-[1rem] left-[1rem] absolute bg-pink-500 px-2 py-0.5 rounded-full text-white text-xs">
                 {cartItems.length}
               </span>
             )}
           </Link>
+
           <Link
             to="/favorites"
-            className="flex items-center transform transition-transform hover:translate-x-2"
+            className="flex items-center transform transition-transform hover:translate-x-2 group"
           >
             <FaHeart className="mt-[3rem] mr-2" size={26} />
-            <span className="hidden nav-item-name mt-[3rem]">Favorites</span>
+            <span className="group-hover:inline hidden mt-[3rem]">
+              Favorites
+            </span>
             <FavoritesCount />
           </Link>
         </div>

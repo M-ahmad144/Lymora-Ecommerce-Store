@@ -6,11 +6,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "http://localhost:5000",
-        changeOrigin: true,
-        secure: false,
-      },
-      "/uploads": {
+        // target: "https://lymora.choreoapps.dev",
         target: "http://localhost:5000",
         changeOrigin: true,
         secure: false,

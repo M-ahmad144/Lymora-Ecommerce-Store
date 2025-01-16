@@ -14,11 +14,8 @@ import { createBrowserRouter } from "react-router-dom";
 // Auth routes
 import Login from "./pages/Auth/Login.jsx";
 import Register from "./pages/Auth/Register.jsx";
-
-// Private Route component (for routes that require user to be logged in)
 import PrivateRoute from "./components/PrivateRoute.jsx";
 
-// User profile route
 import Profile from "./pages/User/Profile.jsx";
 
 // Admin routes (for admin-only pages)
@@ -35,6 +32,7 @@ import Favorites from "./pages/Products/Favorites.jsx";
 import ProductDetails from "./pages/Products/ProductDetails.jsx";
 import Cart from "./pages/Cart/Cart.jsx";
 import Shop from "./pages/Shop/Shop.jsx";
+import Shipping from "./pages/Orders/Shipping.jsx";
 
 // Create browser router and define routes
 const router = createBrowserRouter(
@@ -51,7 +49,8 @@ const router = createBrowserRouter(
 
       {/* Private routes (accessible only by authenticated users) */}
       <Route path="" element={<PrivateRoute />}>
-        <Route path="/profile" element={<Profile />} />{" "}
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/shipping" element={<Shipping />} />
       </Route>
       {/* Admin routes (accessible only by admin users) */}
       <Route path="/admin" element={<AdminRoute />}>
