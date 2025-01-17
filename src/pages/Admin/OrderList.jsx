@@ -16,7 +16,10 @@ const OrderList = () => {
   if (isLoading) return <Loader />;
   if (error)
     return (
-      <Message variant="danger">{error?.data?.message || error.error}</Message>
+      <div className="place-items-center grid">
+        {" "}
+        <Message variant="danger">Something went wrong</Message>
+      </div>
     );
 
   return (

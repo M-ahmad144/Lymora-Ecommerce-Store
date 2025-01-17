@@ -6,8 +6,8 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        // target: "https://lymora.choreoapps.dev",
-        target: "http://localhost:5000",
+        target: "https://lymora.choreoapps.dev",
+        // target: "http://localhost:5000",
         changeOrigin: true,
         secure: false,
       },
