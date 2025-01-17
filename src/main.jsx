@@ -36,6 +36,7 @@ import Shop from "./pages/Shop/Shop.jsx";
 import Shipping from "./pages/Orders/Shipping.jsx";
 import PlaceOrder from "./pages/Orders/PlaceOrder.jsx";
 import Order from "./pages/Orders/Order.jsx";
+import UserOrder from "./pages/User/UserOrder.jsx";
 
 // Create browser router and define routes
 const router = createBrowserRouter(
@@ -56,6 +57,7 @@ const router = createBrowserRouter(
         <Route path="/profile" element={<Profile />} />
         <Route path="/shipping" element={<Shipping />} />
         <Route path="/placeorder" element={<PlaceOrder />} />
+        <Route path="/user-orders" element={<UserOrder />} />
       </Route>
       {/* Admin routes (accessible only by admin users) */}
       <Route path="/admin" element={<AdminRoute />}>
