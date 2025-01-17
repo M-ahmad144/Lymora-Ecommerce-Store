@@ -203,8 +203,8 @@ const Order = () => {
                   disabled={loadingDeliver}
                 >
                   {loadingDeliver ? (
-                    <div className="flex justify-center items-center">
-                      <Loader />
+                    <div className="flex justify-center items-center h-screen">
+                      <div className="border-pink-800 border-t-2 border-b-2 rounded-full w-32 h-32 animate-spin"></div>
                     </div>
                   ) : (
                     "Mark As Delivered"
