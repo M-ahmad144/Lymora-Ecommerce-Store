@@ -41,6 +41,7 @@ function Navigation() {
   const toggleSidebar = () => setShowSidebar(!showSidebar);
 
   const dropdownRef = useRef(null);
+  console.log(currentUser.data.isAdmin);
 
   // Close dropdown if clicked outside
   useEffect(() => {
@@ -72,7 +73,7 @@ function Navigation() {
         } flex flex-col justify-between p-4  text-white bg-black h-[100vh] fixed transition-transform duration-300`}
       >
         {/* Sidebar Links */}
-        <div className="flex flex-col justify-center space-y-5">
+        <div className="flex flex-col justify-center space-y-2">
           <Link
             to="/"
             className="flex items-center transform transition-transform hover:translate-x-2 group"
