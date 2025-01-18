@@ -1,4 +1,4 @@
-export const BASE_URL = "";
+export const BASE_URL = "https://lymora.choreoapps.dev";
 export const USER_URL = "/api/users";
 export const CATEGORY_URL = "/api/categories";
 export const PRODUCT_URL = "/api/products";
