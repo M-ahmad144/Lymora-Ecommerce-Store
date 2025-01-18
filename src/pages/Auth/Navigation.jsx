@@ -41,7 +41,6 @@ function Navigation() {
   const toggleSidebar = () => setShowSidebar(!showSidebar);
 
   const dropdownRef = useRef(null);
-  console.log(currentUser.data.isAdmin);
 
   // Close dropdown if clicked outside
   useEffect(() => {

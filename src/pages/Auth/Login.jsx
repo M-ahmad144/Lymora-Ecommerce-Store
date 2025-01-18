@@ -34,11 +34,10 @@ function Login() {
     }
     try {
       const user = await login({ email, password }).unwrap();
-      console.log(user);
+
       dispatch(setCredentials(user)); // Save user credentials to Redux store
       navigate(redirect); // Redirect after successful login
     } catch (error) {
-      console.log(error);
       toast.error(error?.message || "Failed to sign in");
     }
   };

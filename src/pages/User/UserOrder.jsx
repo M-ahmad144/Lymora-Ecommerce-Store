@@ -7,7 +7,7 @@ import { useGetMyOrdersQuery } from "../../redux/api/orderApiSlice";
 const UserOrder = () => {
   const { data: orders, isLoading, error } = useGetMyOrdersQuery();
   const [expandedId, setExpandedId] = useState(null);
-  console.log(orders);
+
   const toggleExpand = (id) => {
     setExpandedId(expandedId === id ? null : id);
   };

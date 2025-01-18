@@ -17,7 +17,6 @@ const AdminDashboard = () => {
   const { data: orders, isLoading: ordersLoading } = useGetTotalOrdersQuery();
   const { data: salesDetail } = useGetTotalSalesByDateQuery();
 
-  console.log(customers);
   const [chartData, setChartData] = useState({
     options: {
       chart: {

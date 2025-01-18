@@ -49,7 +49,6 @@ function Register() {
       navigate(redirect); // Redirect after successful registration
       toast.success("User registered successfully");
     } catch (error) {
-      console.log(error);
       toast.error(error.data.message || "Failed to register user");
     }
   };
@@ -76,7 +75,7 @@ function Register() {
             <input
               type="text"
               id="name"
-              className="mt-2 p-3 border rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-pink-500 text-black"
+              className="mt-2 p-3 border rounded-lg focus:ring-2 focus:ring-pink-500 w-full text-black focus:outline-none"
               placeholder="Enter name"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
