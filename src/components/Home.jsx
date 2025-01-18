@@ -15,10 +15,10 @@ const Home = () => {
       {isError ? (
         <Message variant="danger">
           {isError?.data.message || isError.error}
+          <p className="text-center"></p>
         </Message>
       ) : (
         <>
-          {/* Header Section */}
           <div className="flex md:flex-row flex-col justify-between items-center px-4 py-6">
             <h1 className="md:ml-40 font-semibold text-[2.5rem] text-center text-pink-600 md:text-left md:text-[3rem]">
               Special Products

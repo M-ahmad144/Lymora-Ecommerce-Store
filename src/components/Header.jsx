@@ -19,7 +19,7 @@ const Header = () => {
     return (
       <div className="flex justify-center">
         <h1 className="font-bold text-2xl text-red-500">
-          Something went wrong
+          <p className="text-center"> Something went wrong</p>
         </h1>
       </div>
     );
