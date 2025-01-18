@@ -19,9 +19,9 @@ const Profile = () => {
     useProfileMutation();
 
   useEffect(() => {
-    setUserName(userInfo.data.username);
-    setEmail(userInfo.data.email);
-  }, [userInfo.data.username, userInfo.data.email]);
+    setUserName(userInfo.username);
+    setEmail(userInfo.email);
+  }, [userInfo.username, userInfo.email]);
 
   const dispatch = useDispatch();
 

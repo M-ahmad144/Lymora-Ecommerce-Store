@@ -21,7 +21,11 @@ const UserOrder = () => {
   }
 
   if (!orders || !Array.isArray(orders) || orders.length === 0) {
-    return <Message variant="danger">No orders found.</Message>;
+    return (
+      <Message variant="">
+        <p className="text-center">No orders found</p>
+      </Message>
+    );
   }
 
   return (

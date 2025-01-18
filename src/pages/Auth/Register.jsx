@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import Loader from "../../components/Loader";
 import { useRegisterMutation } from "../../redux/api/userApiSlice";
 import { setCredentials } from "../../redux/features/auth/authSlice";
 import { toast } from "react-toastify";
@@ -44,12 +43,26 @@ function Register() {
       return;
     }
     try {
-      const user = await register({ username, email, password }).unwrap();
-      dispatch(setCredentials(user)); // Save user credentials to Redux store
-      navigate(redirect); // Redirect after successful registration
-      toast.success("User registered successfully");
+      const response = await register({ username, email, password }).unwrap();
+
+      // Ensure the success response before saving data
+      if (response.success) {
+        const { token, data } = response;
+
+        // Save user credentials and token in Redux and localStorage
+        dispatch(setCredentials({ userInfo: data, token }));
+
+        localStorage.setItem("userInfo", JSON.stringify(data));
+        localStorage.setItem("token", token);
+
+        // Redirect after successful registration
+        navigate(redirect);
+        toast.success("User registered successfully");
+      } else {
+        toast.error("Registration failed");
+      }
     } catch (error) {
-      toast.error(error.data.message || "Failed to register user");
+      toast.error(error?.data?.message || "Failed to register user");
     }
   };
 

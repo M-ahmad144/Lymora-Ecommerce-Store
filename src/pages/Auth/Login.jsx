@@ -20,6 +20,7 @@ function Login() {
   const redirect = redirectInUrl ? redirectInUrl : "/";
 
   useEffect(() => {
+    // Redirect if user is already logged in
     if (userInfo) {
       navigate(redirect);
     }
@@ -32,11 +33,24 @@ function Login() {
       toast.error("Please enter both email and password");
       return;
     }
-    try {
-      const user = await login({ email, password }).unwrap();
 
-      dispatch(setCredentials(user)); // Save user credentials to Redux store
-      navigate(redirect); // Redirect after successful login
+    try {
+      // Perform the login request
+      const user = await login({ email, password }).unwrap();
+      console.log(user);
+      console.log(user?.data?.isAdmin ?? "isAdmin not available");
+
+      console.log(user.data ?? "user is not available");
+      // Save user info and token to localStorage and Redux store
+      dispatch(
+        setCredentials({
+          userInfo: user.data,
+          token: user.token,
+        })
+      );
+
+      // Navigate to the redirect URL or home page
+      navigate(redirect);
     } catch (error) {
       toast.error(error?.message || "Failed to sign in");
     }
@@ -65,7 +79,7 @@ function Login() {
               <input
                 type="email"
                 id="email"
-                className="border-gray-700 bg-gray-900 mt-2 p-3 border rounded-lg focus:ring-2 focus:ring-pink-500 w-full text-white focus:outline-none placeholder-gray-500"
+                className="border-gray-700 mt-2 p-3 border rounded-lg focus:ring-2 focus:ring-pink-500 w-full text-black focus:outline-none placeholder-gray-500 test-black"
                 placeholder="Enter email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -82,7 +96,7 @@ function Login() {
               <input
                 type="password"
                 id="password"
-                className="border-gray-700 bg-gray-900 mt-2 p-3 border rounded-lg focus:ring-2 focus:ring-pink-500 w-full text-white focus:outline-none placeholder-gray-500"
+                className="border-gray-700 mt-2 p-3 border rounded-lg focus:ring-2 focus:ring-pink-500 w-full text-black focus:outline-none placeholder-gray-500 test-black"
                 placeholder="Enter password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -92,7 +106,7 @@ function Login() {
             <button
               disabled={isLoading}
               type="submit"
-              className="bg-pink-500 hover:bg-pink-600 px-6 py-3 rounded-lg w-full font-semibold text-lg text-white"
+              className="bg-pink-500 hover:bg-pink-600 px-6 py-3 rounded-lg w-full font-semibold text-lg test-black"
             >
               {isLoading ? "Signing In..." : "Sign In"}
             </button>

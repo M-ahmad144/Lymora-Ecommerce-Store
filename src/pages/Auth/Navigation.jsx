@@ -18,6 +18,7 @@ import FavoritesCount from "../Products/FavoritesCount";
 
 function Navigation() {
   const currentUser = useSelector((state) => state.auth.userInfo);
+  console.log(currentUser);
   const { cartItems } = useSelector((state) => state.cart);
 
   const navigate = useNavigate();
@@ -122,7 +123,7 @@ function Navigation() {
               className="flex items-center text-white hover:text-gray-300 focus:outline-none"
             >
               <span className="font-light text-[0.6rem] text-pink-500">
-                {currentUser.data.username}
+                {currentUser.username}
               </span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -167,11 +168,11 @@ function Navigation() {
           {dropdownOpen && currentUser && (
             <ul
               className={`absolute right-0 mt-2 w-36 bg-black rounded-md shadow-lg ring-1 ring-slate-900 ring-opacity-55 ${
-                !currentUser.data.isAdmin ? "-top-20" : "-top-72"
+                !currentUser.isAdmin ? "-top-20" : "-top-72"
               }`}
             >
               {/* Admin-specific links */}
-              {currentUser.data.isAdmin && (
+              {currentUser.isAdmin && (
                 <>
                   <li>
                     <Link
