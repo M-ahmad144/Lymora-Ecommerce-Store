@@ -3,13 +3,14 @@ import HeartIcon from "./HeartIcon";
 
 const TopProductsCardHeader = ({ product }) => {
   return (
-    <div className="p-4 w-full sm:w-[12rem] md:w-[14rem] lg:w-[18rem] xl:w-[26rem] transform transition-transform duration-300 hover:scale-105">
+    <div className="p-4 w-full sm:w-[12rem] md:w-[20rem] lg:w-[20rem] transform transition-transform duration-300 hover:scale-105">
       <div className="relative">
         <img
           src={product.image}
           alt={product.name}
-          className="group-hover:scale-105 rounded-lg w-full h-[10rem] sm:h-[12rem] md:h-[12rem] lg:h-[14rem] xl:h-[24rem] transform transition-transform object-cover"
+          className="rounded-lg w-full h-auto transition-transform aspect-[4/3] object-cover"
         />
+
         <HeartIcon product={product} />
       </div>
       <Link to={`/product/${product._id}`} className="block group">
@@ -21,7 +22,6 @@ const TopProductsCardHeader = ({ product }) => {
             ${product.price}
           </span>
         </div>
-        {/* Navigation Icon (Right Arrow) */}
         <div className="flex items-center mt-2 text-pink-600 hover:text-pink-800 transition duration-200">
           <span className="mr-2 text-sm">Explore</span>
           <svg

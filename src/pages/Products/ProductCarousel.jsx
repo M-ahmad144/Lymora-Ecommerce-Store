@@ -3,22 +3,12 @@ import Message from "../../components/Message";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import moment from "moment";
-import {
-  FaBox,
-  FaClock,
-  FaShoppingCart,
-  FaStar,
-  FaStore,
-} from "react-icons/fa";
 
 const ProductCarousel = () => {
   const { data: products, isLoading, error } = useGetTopProductsQuery();
-  // settings for the slider
   const settings = {
     dots: false,
     infinite: true,
-
     speed: 300,
     slidesToShow: 1,
     slidesToScroll: 1,
@@ -28,80 +18,36 @@ const ProductCarousel = () => {
   };
 
   return (
-    <div className="md:block lg:block xl:block mt-32 mr-4 mb-4">
+    <div className="mt-24">
       {isLoading ? null : error ? (
         <Message variant="danger">
           {error?.data?.message || error.error}
         </Message>
       ) : (
-        <Slider
-          {...settings}
-          className="md:w-[56rem] lg:w-[50rem] xl:w-[50rem]"
-        >
-          {products.map(
-            ({
-              image,
-              _id,
-              name,
-              price,
-              description,
-              brand,
-              createdAt,
-              numReviews,
-              rating,
-              quantity,
-              countInStock,
-            }) => (
-              <div key={_id}>
-                <img
-                  src={image}
-                  alt={name}
-                  className="rounded-lg w-full h-[30rem] object-cover"
-                />
+        <Slider {...settings} className="w-full md:w-[30rem] xl:w-[35rem]">
+          {products.map(({ image, _id, name, price, description }) => (
+            <div key={_id} className="relative group">
+              {/* Carousel Image */}
+              <img
+                src={image}
+                alt={name}
+                className="group-hover:scale-105 rounded-lg w-full md:w-[35rem] h-auto md:h-[30rem] transition-transform duration-300 object-cover"
+              />
 
-                <div className="flex justify-between mt-4">
-                  <div className="one">
-                    <h2>{name}</h2>
-                    <p> $ {price}</p> <br /> <br />
-                    <p className="w-[25rem]">
-                      {description.substring(0, 170)} ...
-                    </p>
-                  </div>
-
-                  <div className="flex justify-between w-[20rem]">
-                    <div className="one">
-                      <h1 className="flex items-center mb-6">
-                        <FaStore className="mr-2 text-white" /> Brand: {brand}
-                      </h1>
-                      <h1 className="flex items-center mb-6">
-                        <FaClock className="mr-2 text-white" /> Added:{" "}
-                        {moment(createdAt).fromNow()}
-                      </h1>
-                      <h1 className="flex items-center mb-6">
-                        <FaStar className="mr-2 text-white" /> Reviews:
-                        {numReviews}
-                      </h1>
-                    </div>
-
-                    <div className="two">
-                      <h1 className="flex items-center mb-6">
-                        <FaStar className="mr-2 text-white" /> Ratings:{" "}
-                        {Math.round(rating)}
-                      </h1>
-                      <h1 className="flex items-center mb-6">
-                        <FaShoppingCart className="mr-2 text-white" /> Quantity:{" "}
-                        {quantity}
-                      </h1>
-                      <h1 className="flex items-center mb-6">
-                        <FaBox className="mr-2 text-white" /> In Stock:{" "}
-                        {countInStock}
-                      </h1>
-                    </div>
-                  </div>
+              {/* Text Details for Medium Screens and Above */}
+              <div className="shadow-lg mt-4 p-4 rounded-lg">
+                <div className="flex justify-between items-center">
+                  <h2 className="font-bold text-lg truncate">{name}</h2>
+                  <p className="font-semibold text-lg text-pink-500">
+                    ${price}
+                  </p>
                 </div>
+                <p className="mt-2 line-clamp-2 text-sm text-white">
+                  {description}
+                </p>
               </div>
-            )
-          )}
+            </div>
+          ))}
         </Slider>
       )}
     </div>
