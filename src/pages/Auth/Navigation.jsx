@@ -72,7 +72,7 @@ function Navigation() {
         } flex flex-col justify-between p-4  text-white bg-black h-[100vh] fixed transition-transform duration-300`}
       >
         {/* Sidebar Links */}
-        <div className="flex flex-col justify-center">
+        <div className="flex flex-col justify-center space-y-5">
           <Link
             to="/"
             className="flex items-center transform transition-transform hover:translate-x-2 group"
