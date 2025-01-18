@@ -7,7 +7,7 @@ import { useGetMyOrdersQuery } from "../../redux/api/orderApiSlice";
 const UserOrder = () => {
   const { data: orders, isLoading, error } = useGetMyOrdersQuery();
   const [expandedId, setExpandedId] = useState(null);
-
+  console.log(orders);
   const toggleExpand = (id) => {
     setExpandedId(expandedId === id ? null : id);
   };
@@ -20,10 +20,8 @@ const UserOrder = () => {
     );
   }
 
-  if (error) {
-    return (
-      <Message variant="danger">{error?.data?.error || error.error}</Message>
-    );
+  if (!orders || !Array.isArray(orders) || orders.length === 0) {
+    return <Message variant="danger">No orders found.</Message>;
   }
 
   return (
@@ -34,7 +32,7 @@ const UserOrder = () => {
       <div className="shadow-2xl rounded-lg overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="">
+            <thead>
               <tr>
                 <th className="px-4 py-3 font-semibold text-left text-pink-600 text-xs uppercase tracking-wider">
                   Image
@@ -67,8 +65,8 @@ const UserOrder = () => {
                 >
                   <td className="px-4 py-4 whitespace-nowrap">
                     <img
-                      src={order.orderItems[0].image}
-                      alt={order.user}
+                      src={order.orderItems[0]?.image || "/default-image.png"}
+                      alt={`Order for ${order.user || "unknown user"}`}
                       className="w-16 h-16 object-cover"
                     />
                   </td>
@@ -91,7 +89,7 @@ const UserOrder = () => {
                   </td>
                   <td className="px-4 py-4 whitespace-nowrap">
                     <div className="font-medium text-sm text-white">
-                      ${order.totalPrice.toFixed(2)}
+                      ${order.totalPrice?.toFixed(2)}
                     </div>
                   </td>
                   <td className="px-4 py-4 whitespace-nowrap">
