@@ -44,6 +44,6 @@
 
   /* When hovering over the sidebar, increase width and height */
   #navigation-container:hover {
-    width: 10%;
+    width: 15%;
   }
 }

@@ -122,12 +122,12 @@ function Navigation() {
               onClick={toggleDropdown}
               className="flex items-center text-white hover:text-gray-300 focus:outline-none"
             >
-              <span className="font-light text-[0.6rem] text-pink-500">
+              <span className="font-bold text-[0.4rem] text-pink-500">
                 {currentUser.username}
               </span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className={`h-5 w-3 transition-transform ${
+                className={`h-5 w-3 transition-transform mr-20 ${
                   dropdownOpen ? "rotate-180" : ""
                 }`}
                 fill="none"
@@ -167,7 +167,7 @@ function Navigation() {
 
           {dropdownOpen && currentUser && (
             <ul
-              className={`absolute right-0 mt-2 w-36 bg-black rounded-md shadow-lg ring-1 ring-slate-900 ring-opacity-55 ${
+              className={`absolute right-0 mt-2 w-36 bg-black ml-10 rounded-md shadow-lg ring-1 ring-slate-900 ring-opacity-55 ${
                 !currentUser.isAdmin ? "-top-20" : "-top-72"
               }`}
             >
