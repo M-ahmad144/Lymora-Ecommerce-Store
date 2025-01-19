@@ -18,7 +18,7 @@ import FavoritesCount from "../Products/FavoritesCount";
 
 function Navigation() {
   const currentUser = useSelector((state) => state.auth.userInfo);
-  console.log(currentUser);
+
   const { cartItems } = useSelector((state) => state.cart);
 
   const navigate = useNavigate();
@@ -60,7 +60,7 @@ function Navigation() {
       <div
         id="mobile-navigation-toggle"
         onClick={toggleSidebar}
-        className="top-4 left-4 z-[11111111] fixed md:hidden lg:hidden text-2xl text-pink-500 cursor-pointer"
+        className="md:block top-6 left-5 z-[11111111] fixed hidden text-2xl text-pink-500 cursor-pointer"
       >
         <RiMenu3Line />
       </div>
@@ -70,7 +70,7 @@ function Navigation() {
         id="navigation-container"
         className={`${
           showSidebar ? "open" : ""
-        } flex flex-col justify-between p-4  text-white bg-black h-[100vh] fixed transition-transform duration-300`}
+        } flex flex-col justify-between p-4 text-white bg-black h-[100vh] fixed transition-transform duration-300`}
       >
         {/* Sidebar Links */}
         <div className="flex flex-col justify-center space-y-2">
@@ -79,7 +79,8 @@ function Navigation() {
             className="flex items-center transform transition-transform hover:translate-x-2 group"
           >
             <AiOutlineHome className="mt-[3rem] mr-2" size={26} />
-            <span className="group-hover:inline hidden mt-[3rem]">Home</span>
+            <span className="nav-item-name mt-[3rem]">Home</span>{" "}
+            {/* Display on hover */}
           </Link>
 
           <Link
@@ -87,7 +88,8 @@ function Navigation() {
             className="flex items-center transform transition-transform hover:translate-x-2 group"
           >
             <AiOutlineShopping className="mt-[3rem] mr-2" size={26} />
-            <span className="group-hover:inline hidden mt-[3rem]">Shop</span>
+            <span className="nav-item-name mt-[3rem]">Shop</span>{" "}
+            {/* Display on hover */}
           </Link>
 
           <Link
@@ -95,7 +97,8 @@ function Navigation() {
             className="relative flex items-center transform transition-transform hover:translate-x-2 group"
           >
             <AiOutlineShoppingCart className="mt-[3rem] mr-2" size={26} />
-            <span className="group-hover:inline hidden mt-[3rem]">Cart</span>
+            <span className="nav-item-name mt-[3rem]">Cart</span>{" "}
+            {/* Display on hover */}
             {cartItems.length > 0 && (
               <span className="top-[1rem] left-[1rem] absolute bg-pink-500 px-2 py-0.5 rounded-full text-white text-xs">
                 {cartItems.length}
@@ -108,9 +111,8 @@ function Navigation() {
             className="flex items-center transform transition-transform hover:translate-x-2 group"
           >
             <FaHeart className="mt-[3rem] mr-2" size={26} />
-            <span className="group-hover:inline hidden mt-[3rem]">
-              Favorites
-            </span>
+            <span className="nav-item-name mt-[3rem]">Favorites</span>{" "}
+            {/* Display on hover */}
             <FavoritesCount />
           </Link>
         </div>
@@ -150,7 +152,8 @@ function Navigation() {
                   className="flex items-center mt-5 transform transition-transform hover:translate-x-2"
                 >
                   <AiOutlineLogin className="mt-[4px] mr-2" size={26} />
-                  <span className="hidden nav-item-name">LOGIN</span>
+                  <span className="hidden nav-item-name">LOGIN</span>{" "}
+                  {/* Hidden initially */}
                 </Link>
               </li>
               <li>
@@ -159,7 +162,8 @@ function Navigation() {
                   className="flex items-center mt-5 transform transition-transform hover:translate-x-2"
                 >
                   <AiOutlineUserAdd size={26} />
-                  <span className="hidden nav-item-name">REGISTER</span>
+                  <span className="hidden nav-item-name">REGISTER</span>{" "}
+                  {/* Hidden initially */}
                 </Link>
               </li>
             </ul>

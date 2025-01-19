@@ -1,16 +1,29 @@
 /* Sidebar styles */
 #navigation-container {
-  width: 100%;
+  width: 3.5%; /* Initial width */
   height: 100vh;
   position: fixed;
   top: 0;
   left: -100%;
-  transition: left 0.3s ease-in-out;
+  transition: left 0.3s ease-in-out, width 0.3s ease-in-out; /* Smooth transition for width */
   z-index: 11111;
 }
 
 #navigation-container.open {
-  left: 0;
+  left: 0; /* Sidebar visible */
+  width: 60%; /* Set to 60% width when open on mobile */
+}
+
+#navigation-container:hover {
+  width: 15%; /* Expand the sidebar to 15% on hover */
+}
+
+#navigation-container .nav-item-name {
+  display: none; /* Hide the text by default */
+}
+
+#navigation-container:hover .nav-item-name {
+  display: inline-block; /* Show the text when the sidebar expands */
 }
 
 /* Mobile-specific styles */
@@ -29,7 +42,7 @@
   }
 }
 
-@media (min-width: 1025px) {
+@media (min-width: 900px) {
   /* Hide the mobile toggle icon and use the sidebar on larger screens */
   #mobile-navigation-toggle {
     display: none;
@@ -37,12 +50,12 @@
 
   #navigation-container {
     left: 0;
-    width: 3.5%;
+    width: 4%;
     height: 100vh; /* Full height initially */
-    transition: width 0.3s ease-in-out, height 0.3s ease-in-out; /* Smooth transition for both width and height */
+    transition: width 0.3s ease-in-out; /* Smooth transition for width */
   }
 
-  /* When hovering over the sidebar, increase width and height */
+  /* When hovering over the sidebar, increase width */
   #navigation-container:hover {
     width: 15%;
   }

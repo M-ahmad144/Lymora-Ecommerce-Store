@@ -8,7 +8,7 @@ export const productApiSlice = apiSlice.injectEndpoints({
         url: PRODUCT_URL,
         params: { keyword },
       }),
-      keepUnusedDataFor: 5,
+      keepUnusedDataFor: 3600, // Cache for 1 hour
       providesTags: ["Products"],
       invalidatesTags: ["Products"],
     }),
@@ -16,7 +16,6 @@ export const productApiSlice = apiSlice.injectEndpoints({
     // Fetch a single product by ID
     getProductById: builder.query({
       query: (productId) => `${PRODUCT_URL}/${productId}`,
-
       providesTags: (result, error, productId) => [
         { type: "Product", id: productId },
       ],
@@ -25,7 +24,7 @@ export const productApiSlice = apiSlice.injectEndpoints({
     // Fetch all products
     allProducts: builder.query({
       query: () => `${PRODUCT_URL}/allProducts`,
-      keepUnusedDataFor: 5,
+      keepUnusedDataFor: 3600, // Cache for 1 hour
       providesTags: ["Products"],
       invalidatesTags: ["Products"],
     }),
@@ -35,7 +34,7 @@ export const productApiSlice = apiSlice.injectEndpoints({
       query: (productId) => ({
         url: `${PRODUCT_URL}/${productId}`,
       }),
-      keepUnusedDataFor: 5,
+      keepUnusedDataFor: 3600, // Cache for 1 hour
     }),
 
     // Create a new product
@@ -47,7 +46,7 @@ export const productApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Products"],
       providesTags: ["Products"],
-      keepUnusedDataFor: 5,
+      keepUnusedDataFor: 3600, // Cache for 1 hour
     }),
 
     // Update a product by ID
@@ -93,13 +92,13 @@ export const productApiSlice = apiSlice.injectEndpoints({
     // Get top products (e.g., popular)
     getTopProducts: builder.query({
       query: () => `${PRODUCT_URL}/top`,
-      keepUnusedDataFor: 5,
+      keepUnusedDataFor: 3600, // Cache for 1 hour
     }),
 
     // Get new products (e.g., newly added products)
     getNewProducts: builder.query({
       query: () => `${PRODUCT_URL}/new`,
-      keepUnusedDataFor: 5,
+      keepUnusedDataFor: 3600, // Cache for 1 hour
     }),
 
     // Get filtered products based on category and price range

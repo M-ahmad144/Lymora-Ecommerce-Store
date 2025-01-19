@@ -54,7 +54,7 @@ const TopProductsCardHeader = ({ product }) => {
   };
 
   return (
-    <div style={cardStyle} className="hover:scale-105">
+    <div style={cardStyle} className="md:ml-12 hover:scale-105">
       <div className="relative">
         <img
           src={product.image}

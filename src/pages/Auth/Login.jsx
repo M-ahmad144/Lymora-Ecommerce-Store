@@ -37,10 +37,7 @@ function Login() {
     try {
       // Perform the login request
       const user = await login({ email, password }).unwrap();
-      console.log(user);
-      console.log(user?.data?.isAdmin ?? "isAdmin not available");
 
-      console.log(user.data ?? "user is not available");
       // Save user info and token to localStorage and Redux store
       dispatch(
         setCredentials({
