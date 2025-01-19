@@ -4,7 +4,7 @@
 
 **Lymora** is a cutting-edge ecommerce platform designed to provide a seamless and user-friendly shopping experience for customers while offering powerful tools for administrators to manage products, orders, and users efficiently. With modern technologies powering its frontend and backend, Lymora ensures performance, security, and scalability.
 
-![Lymora eCommerce Website](./path-to-your-image.png)  
+![Lymora eCommerce Website](./image.png)  
 *Add a screenshot of your website above to showcase its design and functionality.*
 
 ---
@@ -93,10 +93,6 @@ Built with a **React.js** frontend and a **Node.js/Express** backend, Lymora als
 ---
 
 ## 🖥️ Demo
-
-### Screenshot
-![Lymora Demo Screenshot](./path-to-your-image.png)  
-*Include a visual demonstration of your website's layout and features.*
 
 ### Live Deployment
 Visit [Lymora eCommerce](https://lymora-ecommerce-store.vercel.app/) to explore the platform live.  
