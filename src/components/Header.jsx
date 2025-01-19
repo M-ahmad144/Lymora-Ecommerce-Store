@@ -27,6 +27,23 @@ const Header = () => {
 
   return (
     <>
+      {/* Inline Style for Media Query */}
+      <style>
+        {`
+          @media (max-width: 958px) {
+            .carousel-section {
+              display: none;
+              width:100%
+            }
+          }
+          @media (min-width: 959px) {
+            .mobile-layout {
+              display: none;
+            }
+          }
+        `}
+      </style>
+
       {/* Header Section */}
       <div className="flex md:flex-row flex-col justify-between items-center bg-pink-800 bg-opacity-40 shadow-lg backdrop-blur-lg mx-4 md:mx-32 p-6 rounded-lg">
         <div className="flex items-center gap-4 mb-4 md:mb-0">
@@ -52,7 +69,7 @@ const Header = () => {
       {/* Product Section */}
       <div className="my-8 md:px-16">
         {/* For Large Screens */}
-        <div className="md:flex gap-8 hidden">
+        <div className="md:flex gap-8 carousel-section">
           {/* Product Grid */}
           <div className="grid grid-cols-2">
             {data.map((product) => (
@@ -61,19 +78,19 @@ const Header = () => {
           </div>
 
           {/* Carousel */}
-          <div className="w-[30%]">
+          <div>
             <ProductCarousel />
           </div>
         </div>
 
         {/* For Small Screens */}
-        <div className="md:hidden">
+        <div className="mobile-layout">
           {/* Carousel */}
-          <div className="mb-8 ml-8">
+          <div className="mb-8 w-auto">
             <ProductCarousel />
           </div>
           {/* Product Grid */}
-          <div className="gap-4 grid grid-cols-2 sm:grid-cols-3">
+          <div className="gap-4 grid grid-cols-2 sm:grid-cols-2 sm:ml-20">
             {data.map((product) => (
               <TopProductsCardHeader key={product._id} product={product} />
             ))}

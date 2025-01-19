@@ -12,7 +12,7 @@ const ProductCarousel = () => {
     speed: 300,
     slidesToShow: 1,
     slidesToScroll: 1,
-    arrows: true,
+    arrows: false,
     autoplay: true,
     autoplaySpeed: 3000,
   };
@@ -24,14 +24,14 @@ const ProductCarousel = () => {
           {error?.data?.message || error.error}
         </Message>
       ) : (
-        <Slider {...settings} className="w-full md:w-[30rem] xl:w-[35rem]">
+        <Slider {...settings} className="md:ml-32 w-full md:w-[40rem]">
           {products.map(({ image, _id, name, price, description }) => (
             <div key={_id} className="relative group">
               {/* Carousel Image */}
               <img
                 src={image}
                 alt={name}
-                className="group-hover:scale-105 rounded-lg w-full md:w-[35rem] h-auto md:h-[30rem] transition-transform duration-300 object-cover"
+                className="group-hover:scale-105 rounded-lg w-full md:w-[40rem] h-auto md:h-[auto] transition-transform duration-300 object-cover"
               />
 
               {/* Text Details for Medium Screens and Above */}

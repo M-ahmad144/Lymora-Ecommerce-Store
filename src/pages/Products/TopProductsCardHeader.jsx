@@ -2,34 +2,81 @@ import { Link } from "react-router-dom";
 import HeartIcon from "./HeartIcon";
 
 const TopProductsCardHeader = ({ product }) => {
+  const cardStyle = {
+    padding: "1rem",
+    width: "100%",
+    maxWidth: "20rem",
+    transition: "transform 0.3s",
+  };
+
+  const imageStyle = {
+    borderRadius: "0.5rem",
+    width: "100%",
+    height: "auto",
+    aspectRatio: "4 / 3",
+    objectFit: "cover",
+    transition: "transform 0.3s",
+  };
+
+  const titleStyle = {
+    fontWeight: "500",
+    color: "#2D3748",
+    fontSize: "1rem",
+    lineHeight: "1.25",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
+  };
+
+  const priceStyle = {
+    backgroundColor: "#FED7E2",
+    color: "#D53F8C",
+    padding: "0.125rem 0.5rem",
+    borderRadius: "9999px",
+    fontSize: "0.875rem",
+    fontWeight: "500",
+  };
+
+  const exploreStyle = {
+    display: "flex",
+    alignItems: "center",
+    marginTop: "0.5rem",
+    color: "#D53F8C",
+    fontSize: "0.875rem",
+    cursor: "pointer",
+    transition: "color 0.2s",
+  };
+
+  const svgStyle = {
+    width: "1.25rem",
+    height: "1.25rem",
+    marginLeft: "0.5rem",
+  };
+
   return (
-    <div className="p-4 w-full sm:w-[12rem] md:w-[20rem] lg:w-[20rem] transform transition-transform duration-300 hover:scale-105">
+    <div style={cardStyle} className="hover:scale-105">
       <div className="relative">
         <img
           src={product.image}
           alt={product.name}
-          className="rounded-lg w-full h-auto transition-transform aspect-[4/3] object-cover"
+          style={imageStyle}
+          className="hover:scale-105"
         />
-
         <HeartIcon product={product} />
       </div>
-      <Link to={`/product/${product._id}`} className="block group">
+      <Link to={`/product/${product._id}`} style={{ textDecoration: "none" }}>
         <div className="flex justify-between items-center mt-2">
-          <h2 className="font-medium text-gray-800 text-sm md:text-base lg:text-lg xl:text-xl dark:text-white truncate">
-            {product.name}
-          </h2>
-          <span className="bg-pink-100 dark:bg-pink-800 px-2 py-0.5 rounded-full text-pink-800 text-xs md:text-sm lg:text-base dark:text-pink-300">
-            ${product.price}
-          </span>
+          <h2 style={titleStyle}>{product.name}</h2>
+          <span style={priceStyle}>${product.price}</span>
         </div>
-        <div className="flex items-center mt-2 text-pink-600 hover:text-pink-800 transition duration-200">
-          <span className="mr-2 text-sm">Explore</span>
+        <div style={exploreStyle} className="hover:text-pink-800">
+          <span>Explore</span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            className="w-5 h-5"
+            style={svgStyle}
           >
             <path
               strokeLinecap="round"
