@@ -5,7 +5,7 @@
 **Lymora** is a cutting-edge ecommerce platform designed to provide a seamless and user-friendly shopping experience for customers while offering powerful tools for administrators to manage products, orders, and users efficiently. With modern technologies powering its frontend and backend, Lymora ensures performance, security, and scalability.
 
 ![Lymora eCommerce Website](./image.png)  
-*Add a screenshot of your website above to showcase its design and functionality.*
+
 
 ---
 
