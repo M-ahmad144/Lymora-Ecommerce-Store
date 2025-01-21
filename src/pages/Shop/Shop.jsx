@@ -78,7 +78,7 @@ const Shop = () => {
     <div className="mx-auto container">
       <div className="flex md:flex-row">
         {/* Filters */}
-        <aside className="bg-[#151515] mt-2 mb-2 p-3 sm:w-[8rem] md:w-[30rem]">
+        <aside className="bg-[#151515] mt-2 mb-2 p-3 w-[8rem] md:w-[30rem]">
           <h2 className="bg-black mb-2 px-2 py-1 rounded-full w-full text-center">
             Filter by Categories
           </h2>

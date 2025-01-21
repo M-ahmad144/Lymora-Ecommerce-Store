@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,18 +12,46 @@ import {
   AiOutlineShoppingCart,
 } from "react-icons/ai";
 import { FaHeart } from "react-icons/fa";
-import { RiMenu3Line } from "react-icons/ri"; // Icon for mobile menu toggle
+import { RiMenu3Line } from "react-icons/ri";
 import "./Navigation.css";
 import FavoritesCount from "../Products/FavoritesCount";
 
 function Navigation() {
   const currentUser = useSelector((state) => state.auth.userInfo);
-
   const { cartItems } = useSelector((state) => state.cart);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [logoutApiCall] = useLogoutMutation();
+
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [showSidebar, setShowSidebar] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 1024);
+
+  const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
+  const toggleSidebar = () => setShowSidebar(!showSidebar);
+
+  const dropdownRef = useRef(null);
+
+  // Handle click outside for dropdown
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 1024);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -35,72 +63,80 @@ function Navigation() {
     }
   };
 
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [showSidebar, setShowSidebar] = useState(false);
-
-  const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
-  const toggleSidebar = () => setShowSidebar(!showSidebar);
-
-  const dropdownRef = useRef(null);
-
-  // Close dropdown if clicked outside
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setDropdownOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  const handleNavigation = () => {
+    if (isMobile) setShowSidebar(false);
+  };
 
   return (
     <div>
-      {/* Mobile Menu Toggle Icon */}
-      <div
-        id="mobile-navigation-toggle"
-        onClick={toggleSidebar}
-        className="md:block top-6 left-5 z-[11111111] fixed hidden text-2xl text-pink-500 cursor-pointer"
-      >
-        <RiMenu3Line />
-      </div>
+      {/* Mobile Sidebar Toggle Button */}
+      {isMobile && (
+        <div
+          id="mobile-navigation-toggle"
+          onClick={toggleSidebar}
+          className="top-0 left-0 z-[111111111] fixed text-2xl text-pink-900 cursor-pointer"
+        >
+          <RiMenu3Line />
+        </div>
+      )}
 
-      {/* Sidebar Navigation (Mobile and Desktop) */}
+      {/* Sidebar Navigation */}
       <div
         id="navigation-container"
         className={`${
-          showSidebar ? "open" : ""
-        } flex flex-col justify-between p-4 text-white bg-black h-[100vh] fixed transition-transform duration-300`}
+          showSidebar || !isMobile ? "open" : ""
+        } flex flex-col justify-between p-4 text-white bg-black h-full fixed transition-transform duration-300 ${
+          isMobile ? "w-60 " : "w-20"
+        }`}
       >
         {/* Sidebar Links */}
-        <div className="flex flex-col justify-center space-y-2">
+        <div className="flex flex-col space-y-6 mt-10">
           <Link
             to="/"
             className="flex items-center transform transition-transform hover:translate-x-2 group"
+            onClick={handleNavigation}
           >
-            <AiOutlineHome className="mt-[3rem] mr-2" size={26} />
-            <span className="nav-item-name mt-[3rem]">Home</span>{" "}
-            {/* Display on hover */}
+            <AiOutlineHome size={26} />
+            {/* Show name only if the sidebar is expanded */}
+            <span
+              className={`nav-item-name ${
+                showSidebar ? "inline-block" : "hidden"
+              } ml-2`}
+            >
+              Home
+            </span>
           </Link>
 
           <Link
             to="/shop"
             className="flex items-center transform transition-transform hover:translate-x-2 group"
+            onClick={handleNavigation}
           >
-            <AiOutlineShopping className="mt-[3rem] mr-2" size={26} />
-            <span className="nav-item-name mt-[3rem]">Shop</span>{" "}
-            {/* Display on hover */}
+            <AiOutlineShopping size={26} />
+            <span
+              className={`nav-item-name ${
+                showSidebar ? "inline-block" : "hidden"
+              } ml-2`}
+            >
+              Shop
+            </span>
           </Link>
 
           <Link
             to="/cart"
             className="relative flex items-center transform transition-transform hover:translate-x-2 group"
+            onClick={handleNavigation}
           >
-            <AiOutlineShoppingCart className="mt-[3rem] mr-2" size={26} />
-            <span className="nav-item-name mt-[3rem]">Cart</span>{" "}
-            {/* Display on hover */}
+            <AiOutlineShoppingCart size={26} />
+            <span
+              className={`nav-item-name ${
+                showSidebar ? "inline-block" : "hidden"
+              } ml-2`}
+            >
+              Cart
+            </span>
             {cartItems.length > 0 && (
-              <span className="top-[1rem] left-[1rem] absolute bg-pink-500 px-2 py-0.5 rounded-full text-white text-xs">
+              <span className="top-0 left-8 absolute bg-pink-500 px-2 py-0.5 rounded-full text-white text-xs">
                 {cartItems.length}
               </span>
             )}
@@ -109,16 +145,22 @@ function Navigation() {
           <Link
             to="/favorites"
             className="flex items-center transform transition-transform hover:translate-x-2 group"
+            onClick={handleNavigation}
           >
-            <FaHeart className="mt-[3rem] mr-2" size={26} />
-            <span className="nav-item-name mt-[3rem]">Favorites</span>{" "}
-            {/* Display on hover */}
+            <FaHeart size={26} />
+            <span
+              className={`nav-item-name ${
+                showSidebar ? "inline-block" : "hidden"
+              } ml-2`}
+            >
+              Favorites
+            </span>
             <FavoritesCount />
           </Link>
         </div>
 
-        {/* Dropdown Menu for User Profile */}
-        <div ref={dropdownRef} className="relative">
+        {/* Dropdown for User Profile */}
+        <div ref={dropdownRef} className="relative mt-auto">
           {currentUser ? (
             <button
               onClick={toggleDropdown}
