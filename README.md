@@ -57,9 +57,7 @@ Built with a **React.js** frontend and a **Node.js/Express** backend, Lymora als
 - **MongoDB**: NoSQL database for reliable data storage.  
 - **JWT Authentication**: Ensures secure login and session handling.
 
-### **Deployment**
-- **Frontend**: Hosted on [Vercel](https://vercel.com).  
-- **Backend**: Deployed on [Choreo](https://wso2.com/choreo/).
+
 
 ---
 
